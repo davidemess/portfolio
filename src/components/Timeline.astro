@@ -1,0 +1,49 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import TimelineItem from './TimelineItem.astro';
+import ScrollReveal from './ScrollReveal.astro';
+import { timeline } from '../data/timeline';
+---
+
+<section class="section timeline" id="career">
+  <div class="container">
+    <ScrollReveal>
+      <SectionHeading number="04" title="Career" />
+    </ScrollReveal>
+
+    <div class="timeline__track reveal-stagger">
+      {timeline.map((entry, i) => (
+        <TimelineItem entry={entry} index={i} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline__track {
+    position: relative;
+    padding-left: 0.5rem;
+  }
+
+  /* Vertical line */
+  .timeline__track::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--color-border);
+  }
+
+  @media (min-width: 1024px) {
+    .timeline__track {
+      padding-left: 0;
+    }
+
+    .timeline__track::before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+</style>

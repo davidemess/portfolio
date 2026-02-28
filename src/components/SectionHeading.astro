@@ -1,0 +1,38 @@
+---
+interface Props {
+  number: string;
+  title: string;
+  id?: string;
+}
+
+const { number, title, id } = Astro.props;
+---
+
+<div class="section-heading" id={id}>
+  <span class="section-heading__number mono">// {number}</span>
+  <h2 class="section-heading__title">{title}</h2>
+</div>
+
+<style>
+  .section-heading {
+    margin-bottom: 3rem;
+  }
+
+  .section-heading__number {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+  }
+
+  .section-heading__title {
+    font-size: var(--text-3xl);
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-text-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+</style>

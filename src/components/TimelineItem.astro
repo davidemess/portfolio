@@ -1,0 +1,113 @@
+---
+import type { TimelineEntry } from '../types';
+
+interface Props {
+  entry: TimelineEntry;
+  index: number;
+}
+
+const { entry, index } = Astro.props;
+const side = index % 2 === 0 ? 'left' : 'right';
+---
+
+<div class={`timeline-item timeline-item--${side} reveal`}>
+  <div class="timeline-item__dot" aria-hidden="true"></div>
+  <div class="timeline-item__card">
+    <span class="timeline-item__year mono">{entry.year}</span>
+    <h3 class="timeline-item__title">{entry.title}</h3>
+    <span class="timeline-item__company">{entry.company}</span>
+    <p class="timeline-item__description">{entry.description}</p>
+  </div>
+</div>
+
+<style>
+  .timeline-item {
+    position: relative;
+    padding-left: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .timeline-item__dot {
+    position: absolute;
+    left: -5px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    box-shadow: 0 0 10px var(--color-accent-glow);
+    z-index: 1;
+  }
+
+  .timeline-item__card {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .timeline-item__card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px var(--color-accent-glow);
+  }
+
+  .timeline-item__year {
+    display: inline-block;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+    font-size: var(--text-xs);
+  }
+
+  .timeline-item__title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-text-heading);
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-item__company {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  .timeline-item__description {
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    line-height: 1.7;
+  }
+
+  /* Desktop: alternating layout */
+  @media (min-width: 1024px) {
+    .timeline-item {
+      width: 50%;
+      padding-bottom: 3rem;
+    }
+
+    .timeline-item--left {
+      padding-left: 0;
+      padding-right: 2.5rem;
+      margin-left: 0;
+      text-align: right;
+    }
+
+    .timeline-item--left .timeline-item__dot {
+      left: auto;
+      right: -5px;
+    }
+
+    .timeline-item--right {
+      padding-left: 2.5rem;
+      padding-right: 0;
+      margin-left: 50%;
+    }
+
+    .timeline-item--right .timeline-item__dot {
+      left: -5px;
+    }
+  }
+</style>

@@ -1,0 +1,131 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import ScrollReveal from './ScrollReveal.astro';
+---
+
+<section class="section about" id="about">
+  <div class="container">
+    <ScrollReveal>
+      <SectionHeading number="01" title="About" />
+    </ScrollReveal>
+
+    <div class="about__grid">
+      <ScrollReveal>
+        <div class="about__text">
+          <p>
+            Sono un full-stack developer con oltre 6 anni di esperienza nella
+            progettazione e sviluppo di applicazioni web moderne. Lavoro con
+            architetture scalabili, API RESTful e interfacce utente
+            performanti.
+          </p>
+          <p>
+            Mi appassiona risolvere problemi complessi con soluzioni eleganti.
+            Credo nel codice pulito, nei test automatizzati e nella
+            collaborazione efficace all'interno del team.
+          </p>
+          <p>
+            Quando non scrivo codice, esploro nuove tecnologie, contribuisco
+            a progetti open source e gioco a videogiochi sci-fi.
+          </p>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <div class="about__terminal">
+          <div class="about__terminal-header">
+            <span class="about__terminal-dot about__terminal-dot--red"></span>
+            <span class="about__terminal-dot about__terminal-dot--yellow"></span>
+            <span class="about__terminal-dot about__terminal-dot--green"></span>
+            <span class="about__terminal-title mono">status.sh</span>
+          </div>
+          <div class="about__terminal-body">
+            <p><span class="about__prompt">$</span> cat status.json</p>
+            <pre><code>{`{
+  "location": "Italia",
+  "focus": "Full-Stack Web Dev",
+  "languages": ["it", "en"],
+  "available": true
+}`}</code></pre>
+          </div>
+        </div>
+      </ScrollReveal>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    display: grid;
+    gap: 3rem;
+  }
+
+  .about__text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .about__text p {
+    color: var(--color-text-primary);
+    line-height: 1.8;
+  }
+
+  /* Terminal decoration */
+  .about__terminal {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .about__terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-bg-tertiary);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about__terminal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .about__terminal-dot--red { background-color: #ff5f56; }
+  .about__terminal-dot--yellow { background-color: #ffbd2e; }
+  .about__terminal-dot--green { background-color: #27c93f; }
+
+  .about__terminal-title {
+    margin-left: auto;
+  }
+
+  .about__terminal-body {
+    padding: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    line-height: 1.7;
+  }
+
+  .about__terminal-body pre {
+    margin-top: 0.5rem;
+  }
+
+  .about__terminal-body code {
+    color: var(--color-accent);
+  }
+
+  .about__prompt {
+    color: var(--color-accent);
+    margin-right: 0.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .about__grid {
+      grid-template-columns: 3fr 2fr;
+      align-items: start;
+    }
+  }
+</style>

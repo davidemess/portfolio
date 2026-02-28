@@ -1,0 +1,108 @@
+---
+import Button from './Button.astro';
+---
+
+<section class="hero" id="main-content">
+  <div class="hero__inner container">
+    <div class="hero__content">
+      <p class="hero__greeting mono">// Ciao, mi chiamo</p>
+      <h1 class="hero__name">
+        Developer<span class="hero__cursor">_</span>
+      </h1>
+      <p class="hero__tagline">
+        Full-Stack Developer &mdash; Costruisco esperienze web robuste, scalabili e accessibili.
+      </p>
+      <div class="hero__actions">
+        <Button href="#projects">Vedi Progetti</Button>
+        <Button href="#contact" variant="ghost">Contattami</Button>
+      </div>
+    </div>
+
+    <div class="hero__scroll-indicator" aria-hidden="true">
+      <span class="mono">scroll</span>
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 4L8 20M8 20L2 14M8 20L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 5rem;
+  }
+
+  .hero__inner {
+    position: relative;
+    width: 100%;
+  }
+
+  .hero__content {
+    animation: fadeInUp 0.8s ease both;
+  }
+
+  .hero__greeting {
+    font-size: var(--text-base);
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+  }
+
+  .hero__name {
+    font-size: var(--text-5xl);
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-text-heading);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__cursor {
+    color: var(--color-accent);
+    animation: blink 1s step-end infinite;
+  }
+
+  .hero__tagline {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 550px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .hero__scroll-indicator {
+    position: absolute;
+    bottom: -4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-secondary);
+    animation: bounceDown 2s ease-in-out infinite;
+  }
+
+  .hero__scroll-indicator .mono {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__scroll-indicator {
+      bottom: -6rem;
+    }
+  }
+</style>

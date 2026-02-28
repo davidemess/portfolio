@@ -1,0 +1,45 @@
+---
+interface Props {
+  tag?: string;
+  class?: string;
+  stagger?: boolean;
+}
+
+const { tag = 'div', class: className = '', stagger = false } = Astro.props;
+const Tag = tag as any;
+const classes = [stagger ? 'reveal-stagger' : '', className].filter(Boolean).join(' ');
+---
+
+<Tag class={classes} data-reveal-container={stagger ? '' : undefined}>
+  {stagger ? (
+    <slot />
+  ) : (
+    <div class="reveal">
+      <slot />
+    </div>
+  )}
+</Tag>
+
+<script>
+  function initScrollReveal() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('.reveal').forEach((el) => {
+      observer.observe(el);
+    });
+  }
+
+  // Run on initial load and on Astro page transitions
+  initScrollReveal();
+  document.addEventListener('astro:after-swap', initScrollReveal);
+</script>

@@ -1,0 +1,40 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import SkillCard from './SkillCard.astro';
+import ScrollReveal from './ScrollReveal.astro';
+import { skills } from '../data/skills';
+---
+
+<section class="section skills" id="skills">
+  <div class="container">
+    <ScrollReveal>
+      <SectionHeading number="02" title="Skills" />
+    </ScrollReveal>
+
+    <div class="skills__grid reveal-stagger">
+      {skills.map((skill) => (
+        <SkillCard skill={skill} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills__grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .skills__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .skills__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
