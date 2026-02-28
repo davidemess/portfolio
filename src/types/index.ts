@@ -25,3 +25,37 @@ export interface Social {
   href: string;
   icon: string; // SVG path or identifier
 }
+
+export interface SiteConfig {
+  meta: {
+    title: string;
+    description: string;
+    lang: string;
+  };
+  personal: {
+    name: string;
+    role: string;
+    greeting: string;
+    tagline: string;
+    logoText: string;
+  };
+  about: {
+    bio: string[];
+    terminal: {
+      location: string;
+      focus: string;
+      languages: string[];
+      available: boolean;
+    };
+  };
+  skills: Skill[];
+  projects: Project[];
+  timeline: TimelineEntry[];
+  socials: Social[];
+  contact: {
+    heading: string;
+    text: string;
+    ctaText: string;
+    ctaEmail: string;
+  };
+}

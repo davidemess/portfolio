@@ -1,6 +1,10 @@
 ---
 import SectionHeading from './SectionHeading.astro';
 import ScrollReveal from './ScrollReveal.astro';
+import config from '../data/config.json';
+
+const { bio, terminal } = config.about;
+const terminalJson = JSON.stringify(terminal, null, 2);
 ---
 
 <section class="section about" id="about">
@@ -12,21 +16,9 @@ import ScrollReveal from './ScrollReveal.astro';
     <div class="about__grid">
       <ScrollReveal>
         <div class="about__text">
-          <p>
-            Sono un full-stack developer con oltre 6 anni di esperienza nella
-            progettazione e sviluppo di applicazioni web moderne. Lavoro con
-            architetture scalabili, API RESTful e interfacce utente
-            performanti.
-          </p>
-          <p>
-            Mi appassiona risolvere problemi complessi con soluzioni eleganti.
-            Credo nel codice pulito, nei test automatizzati e nella
-            collaborazione efficace all'interno del team.
-          </p>
-          <p>
-            Quando non scrivo codice, esploro nuove tecnologie, contribuisco
-            a progetti open source e gioco a videogiochi sci-fi.
-          </p>
+          {bio.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
         </div>
       </ScrollReveal>
 
@@ -40,12 +32,7 @@ import ScrollReveal from './ScrollReveal.astro';
           </div>
           <div class="about__terminal-body">
             <p><span class="about__prompt">$</span> cat status.json</p>
-            <pre><code>{`{
-  "location": "Italia",
-  "focus": "Full-Stack Web Dev",
-  "languages": ["it", "en"],
-  "available": true
-}`}</code></pre>
+            <pre><code>{terminalJson}</code></pre>
           </div>
         </div>
       </ScrollReveal>

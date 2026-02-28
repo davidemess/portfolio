@@ -3,19 +3,19 @@ import SectionHeading from './SectionHeading.astro';
 import Button from './Button.astro';
 import ScrollReveal from './ScrollReveal.astro';
 import { socials } from '../data/socials';
+import config from '../data/config.json';
 ---
 
 <section class="section contact" id="contact">
   <div class="container">
     <ScrollReveal>
-      <SectionHeading number="05" title="Contact" />
+      <SectionHeading number="05" title={config.contact.heading} />
     </ScrollReveal>
 
     <ScrollReveal>
       <div class="contact__card">
         <p class="contact__text">
-          Hai un progetto interessante o vuoi semplicemente fare una chiacchierata?
-          La mia inbox è sempre aperta.
+          {config.contact.text}
         </p>
 
         <div class="contact__links">
@@ -35,8 +35,8 @@ import { socials } from '../data/socials';
           ))}
         </div>
 
-        <Button href="mailto:dev@example.com" class="contact__cta">
-          Invia un messaggio
+        <Button href={config.contact.ctaEmail} class="contact__cta">
+          {config.contact.ctaText}
         </Button>
       </div>
     </ScrollReveal>

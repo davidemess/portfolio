@@ -1,16 +1,17 @@
 ---
 import Button from './Button.astro';
+import config from '../data/config.json';
 ---
 
 <section class="hero" id="main-content">
   <div class="hero__inner container">
     <div class="hero__content">
-      <p class="hero__greeting mono">// Ciao, mi chiamo</p>
+      <p class="hero__greeting mono">{config.personal.greeting}</p>
       <h1 class="hero__name">
-        Developer<span class="hero__cursor">_</span>
+        {config.personal.name}<span class="hero__cursor">_</span>
       </h1>
       <p class="hero__tagline">
-        Full-Stack Developer &mdash; Costruisco esperienze web robuste, scalabili e accessibili.
+        {config.personal.tagline}
       </p>
       <div class="hero__actions">
         <Button href="#projects">Vedi Progetti</Button>
