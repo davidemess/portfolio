@@ -23,7 +23,7 @@ import config from '../data/config.json';
       <div class="hero__avatar-wrapper">
         <div class="hero__avatar-frame">
           <img
-            src="/images/avatar.jpg"
+            src={`${import.meta.env.BASE_URL}images/avatar.jpg`}
             alt={config.personal.name}
             class="hero__avatar"
             width="320"
