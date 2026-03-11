@@ -5,17 +5,31 @@ import config from '../data/config.json';
 
 <section class="hero" id="main-content">
   <div class="hero__inner container">
-    <div class="hero__content">
-      <p class="hero__greeting mono">{config.personal.greeting}</p>
-      <h1 class="hero__name">
-        {config.personal.name}<span class="hero__cursor">_</span>
-      </h1>
-      <p class="hero__tagline">
-        {config.personal.tagline}
-      </p>
-      <div class="hero__actions">
-        <Button href="#projects">View Projects</Button>
-        <Button href="#contact" variant="ghost">Contact Me</Button>
+    <div class="hero__layout">
+      <div class="hero__content">
+        <p class="hero__greeting mono">{config.personal.greeting}</p>
+        <h1 class="hero__name">
+          {config.personal.name}<span class="hero__cursor">_</span>
+        </h1>
+        <p class="hero__tagline">
+          {config.personal.tagline}
+        </p>
+        <div class="hero__actions">
+          <Button href="#projects">View Projects</Button>
+          <Button href="#contact" variant="ghost">Contact Me</Button>
+        </div>
+      </div>
+
+      <div class="hero__avatar-wrapper">
+        <div class="hero__avatar-frame">
+          <img
+            src="/images/avatar.jpg"
+            alt={config.personal.name}
+            class="hero__avatar"
+            width="320"
+            height="320"
+          />
+        </div>
       </div>
     </div>
 
@@ -43,8 +57,64 @@ import config from '../data/config.json';
     width: 100%;
   }
 
+  .hero__layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
   .hero__content {
     animation: fadeInUp 0.8s ease both;
+    flex: 1;
+  }
+
+  .hero__avatar-wrapper {
+    flex-shrink: 0;
+    display: none;
+    animation: fadeInUp 0.8s ease 0.2s both;
+  }
+
+  .hero__avatar-frame {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, var(--color-accent), transparent 60%);
+  }
+
+  .hero__avatar-frame::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent) 0%, transparent 50%, var(--color-accent) 100%);
+    opacity: 0.3;
+    z-index: -1;
+  }
+
+  .hero__avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    border: 2px solid var(--color-bg);
+  }
+
+  @media (min-width: 768px) {
+    .hero__avatar-wrapper {
+      display: block;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__avatar-frame {
+      width: 320px;
+      height: 320px;
+    }
   }
 
   .hero__greeting {
