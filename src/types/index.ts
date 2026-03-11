@@ -45,7 +45,6 @@ export interface SiteConfig {
       location: string;
       focus: string;
       languages: string[];
-      available: boolean;
     };
   };
   skills: Skill[];
@@ -56,6 +55,6 @@ export interface SiteConfig {
     heading: string;
     text: string;
     ctaText: string;
-    ctaEmail: string;
+    ctaLinkedIn: string;
   };
 }
