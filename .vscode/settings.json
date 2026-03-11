@@ -1,0 +1,8 @@
+{
+  "git.enableSmartCommit": false,
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Always use conventional commits format: <type>(<scope>): <description>. Types allowed: feat, fix, docs, style, refactor, test, chore, perf, ci. Scopes for this project: ui, data, config, style, deps, ci. Subject line must be lowercase, imperative mood, max 72 chars, no period at the end."
+    }
+  ]
+}
