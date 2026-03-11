@@ -1,44 +1,44 @@
 {
   "meta": {
-    "title": "Portfolio // Developer",
-    "description": "Full-stack developer portfolio. Building robust, scalable solutions.",
-    "lang": "it"
+    "title": "Davide Messori // Software Technical Leader",
+    "description": "Software Technical Leader with expertise in .NET, Angular and modern architectures, specialized in industrial WMS, WCS/MFS and SCADA systems.",
+    "lang": "en"
   },
   "personal": {
-    "name": "Developer",
-    "role": "Full-Stack Developer",
-    "greeting": "// Ciao, mi chiamo",
-    "tagline": "Full-Stack Developer — Costruisco esperienze web robuste, scalabili e accessibili.",
-    "logoText": "DEV"
+    "name": "Davide Messori",
+    "role": "Software Technical Leader",
+    "greeting": "// Hi, my name is",
+    "tagline": "Software Technical Leader — .NET & Angular | Industrial Systems",
+    "logoText": "DM"
   },
   "about": {
     "bio": [
-      "Sono un full-stack developer con oltre 6 anni di esperienza nella progettazione e sviluppo di applicazioni web moderne. Lavoro con architetture scalabili, API RESTful e interfacce utente performanti.",
-      "Mi appassiona risolvere problemi complessi con soluzioni eleganti. Credo nel codice pulito, nei test automatizzati e nella collaborazione efficace all'interno del team.",
-      "Quando non scrivo codice, esploro nuove tecnologie, contribuisco a progetti open source e gioco a videogiochi sci-fi."
+      "Software Technical Leader with strong expertise in .NET, Angular and modern software architectures, specialized in industrial WMS, WCS/MFS and SCADA systems.",
+      "Leading the development of next-generation intralogistics solutions, contributing to architecture design, technical decision-making, software quality and team growth.",
+      "Driving refactoring of legacy architecture modules while managing the complexities of coexisting legacy code, delivering reliable and maintainable industrial software."
     ],
     "terminal": {
-      "location": "Italia",
-      "focus": "Full-Stack Web Dev",
-      "languages": ["it", "en"],
-      "available": true
+      "location": "Modena Area, IT",
+      "focus": "Industrial Software & WMS",
+      "languages": ["Italian (native)", "English (professional)"]
     }
   },
   "skills": [
-    { "name": "TypeScript", "level": 90, "category": "frontend" },
-    { "name": "React", "level": 85, "category": "frontend" },
-    { "name": "Astro", "level": 80, "category": "frontend" },
-    { "name": "CSS / Sass", "level": 85, "category": "frontend" },
-    { "name": "Node.js", "level": 85, "category": "backend" },
-    { "name": "Python", "level": 75, "category": "backend" },
-    { "name": "PostgreSQL", "level": 70, "category": "backend" },
-    { "name": "Docker", "level": 70, "category": "devops" },
-    { "name": "Git", "level": 90, "category": "tools" }
+    { "name": "Angular", "level": 88, "category": "frontend" },
+    { "name": "TypeScript", "level": 85, "category": "frontend" },
+    { "name": "RxJS / Redux", "level": 80, "category": "frontend" },
+    { "name": "ASP.NET Core", "level": 92, "category": "backend" },
+    { "name": "Entity Framework", "level": 85, "category": "backend" },
+    { "name": "SQL Server", "level": 80, "category": "backend" },
+    { "name": "SignalR / RabbitMQ", "level": 78, "category": "backend" },
+    { "name": "Docker", "level": 75, "category": "devops" },
+    { "name": "Azure DevOps / CI-CD", "level": 78, "category": "devops" },
+    { "name": "Git / GitFlow", "level": 90, "category": "tools" }
   ],
   "projects": [
     {
       "title": "ATLAS Dashboard",
-      "description": "Real-time analytics dashboard con visualizzazioni interattive. Stack React, D3.js e WebSocket per streaming dati live.",
+      "description": "Real-time analytics dashboard with interactive visualizations. React, D3.js and WebSocket stack for live data streaming.",
       "tags": ["React", "TypeScript", "D3.js", "WebSocket"],
       "github": "https://github.com",
       "demo": "https://example.com",
@@ -46,14 +46,14 @@
     },
     {
       "title": "HERMES API Gateway",
-      "description": "Gateway API ad alte prestazioni con rate limiting, caching e autenticazione JWT. Architettura microservizi.",
+      "description": "High-performance API gateway with rate limiting, caching and JWT authentication. Microservices architecture.",
       "tags": ["Node.js", "Express", "Redis", "Docker"],
       "github": "https://github.com",
       "featured": true
     },
     {
       "title": "CORTEX CMS",
-      "description": "Content management system headless con editor WYSIWYG, versioning e API GraphQL.",
+      "description": "Headless content management system with WYSIWYG editor, versioning and GraphQL API.",
       "tags": ["Next.js", "GraphQL", "PostgreSQL", "Prisma"],
       "github": "https://github.com",
       "demo": "https://example.com",
@@ -61,58 +61,53 @@
     },
     {
       "title": "NEXUS CLI",
-      "description": "Tool CLI per scaffolding progetti con template personalizzabili e configurazione interattiva.",
+      "description": "CLI tool for project scaffolding with customizable templates and interactive configuration.",
       "tags": ["Node.js", "TypeScript", "Commander"],
       "github": "https://github.com"
     }
   ],
   "timeline": [
     {
-      "year": "2024 — Presente",
-      "title": "Senior Full-Stack Developer",
-      "company": "TechCorp Systems",
-      "description": "Lead sviluppo piattaforma SaaS enterprise. Architettura microservizi, CI/CD, mentoring team di 4 developer."
+      "year": "Apr 2024 — Present",
+      "title": "Software Technical Leader",
+      "company": "System Logistics Spa — Fiorano Modenese, IT",
+      "description": "Driving the development of a highly configurable WMS and SCADA web application using Angular, ASP.NET Core and SQL Server. Contributing to microservices backend architecture with REST APIs, RabbitMQ and Docker. Coordinating Agile activities, code reviews and team mentorship."
     },
     {
-      "year": "2022 — 2024",
-      "title": "Full-Stack Developer",
-      "company": "Digital Agency",
-      "description": "Sviluppo applicazioni web per clienti enterprise. Focus su performance, accessibilità e UX."
+      "year": "Feb 2020 — Apr 2024",
+      "title": "Software Engineer → Senior Software Engineer",
+      "company": "System Logistics Spa — Fiorano Modenese, IT",
+      "description": "Development and evolution of industrial WMS and WCS/MFS web applications. Focus on code quality, testing, validation phases (FAT, SAT) and integration with SCADA systems."
     },
     {
-      "year": "2020 — 2022",
-      "title": "Frontend Developer",
-      "company": "StartupXYZ",
-      "description": "Sviluppo interfacce utente con React e TypeScript. Design system, testing e ottimizzazione bundle."
+      "year": "Mar 2018 — Feb 2020",
+      "title": "Software Developer",
+      "company": "Sacmi Tech Spa — Fiorano Modenese, IT",
+      "description": "Development and maintenance of industrial software solutions for the ceramic industry, including data collection, supervision and production management systems. On-site technical support and direct collaboration with customers."
     },
     {
-      "year": "2018 — 2020",
-      "title": "Junior Developer",
-      "company": "Web Solutions",
-      "description": "Primi passi nello sviluppo web professionale. HTML, CSS, JavaScript, PHP e WordPress."
+      "year": "Sep 2012 — Jul 2017",
+      "title": "Computer Science & Telecommunications",
+      "company": "I.T.I.S Enrico Fermi — Modena, IT",
+      "description": "Diploma in Computer Science and Telecommunications. Network design (TCP/IP, VLAN, VPN), Linux/Bash scripting, Python, C, web programming and database design."
     }
   ],
   "socials": [
     {
       "label": "GitHub",
-      "href": "https://github.com",
+      "href": "https://github.com/davidemess",
       "icon": "M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
     },
     {
       "label": "LinkedIn",
-      "href": "https://linkedin.com",
+      "href": "https://www.linkedin.com/in/davide-messori/",
       "icon": "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-    },
-    {
-      "label": "Email",
-      "href": "mailto:dev@example.com",
-      "icon": "M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"
     }
   ],
   "contact": {
     "heading": "Contact",
-    "text": "Hai un progetto interessante o vuoi semplicemente fare una chiacchierata? La mia inbox è sempre aperta.",
-    "ctaText": "Invia un messaggio",
-    "ctaEmail": "mailto:dev@example.com"
+    "text": "Got an interesting project or just want to chat? My inbox is always open.",
+    "ctaText": "Send a message on LinkedIn",
+    "ctaLinkedIn": "https://www.linkedin.com/in/davide-messori/"
   }
 }
