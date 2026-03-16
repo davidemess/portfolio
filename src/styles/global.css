@@ -1,7 +1,7 @@
 /* ===== FONT FACES ===== */
 @font-face {
   font-family: 'Space Grotesk';
-  src: url('/fonts/SpaceGrotesk-Variable.woff2') format('woff2');
+  src: url('/portfolio/fonts/SpaceGrotesk-Variable.woff2') format('woff2');
   font-weight: 300 700;
   font-display: swap;
   font-style: normal;
@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: 'Inter';
-  src: url('/fonts/Inter-Variable.woff2') format('woff2');
+  src: url('/portfolio/fonts/Inter-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-display: swap;
   font-style: normal;
@@ -59,6 +59,36 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
+}
+
+/* ===== THEMES ===== */
+
+/* Purple — GLITCH_MODE / DEEP_SPACE */
+:root[data-theme="purple"] {
+  --color-bg-primary:    #0e0818;
+  --color-bg-secondary:  #160d2a;
+  --color-bg-tertiary:   #1e0a3c;
+  --color-accent:        #bf5fff;
+  --color-accent-dim:    #9c27b0;
+  --color-accent-glow:   rgba(191, 95, 255, 0.15);
+  --color-text-primary:  #ddc4ff;
+  --color-text-secondary:#7a5a9a;
+  --color-text-heading:  #f3e5ff;
+  --color-border:        #2e1a4a;
+}
+
+/* Matrix — MATRIX_GRN / TERMINAL_DARK */
+:root[data-theme="matrix"] {
+  --color-bg-primary:    #080b08;
+  --color-bg-secondary:  #0d1a0f;
+  --color-bg-tertiary:   #1a3d1f;
+  --color-accent:        #7fff6a;
+  --color-accent-dim:    #52c44a;
+  --color-accent-glow:   rgba(127, 255, 106, 0.15);
+  --color-text-primary:  #b8ffb0;
+  --color-text-secondary:#5a8a5a;
+  --color-text-heading:  #e0ffe8;
+  --color-border:        #1e3a1f;
 }
 
 /* ===== RESET ===== */
