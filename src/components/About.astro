@@ -5,12 +5,13 @@ import config from '../data/config.json';
 
 const { bio, terminal } = config.about;
 const terminalJson = JSON.stringify(terminal, null, 2);
+const { name } = config.personal;
 ---
 
 <section class="section about" id="about">
   <div class="container">
     <ScrollReveal>
-      <SectionHeading number="01" title="About" />
+      <SectionHeading number="01" title="whoami" />
     </ScrollReveal>
 
     <div class="about__grid">
@@ -28,17 +29,111 @@ const terminalJson = JSON.stringify(terminal, null, 2);
             <span class="about__terminal-dot about__terminal-dot--red"></span>
             <span class="about__terminal-dot about__terminal-dot--yellow"></span>
             <span class="about__terminal-dot about__terminal-dot--green"></span>
-            <span class="about__terminal-title mono">status.sh</span>
+            <span class="about__terminal-title mono">profile.sh</span>
           </div>
           <div class="about__terminal-body">
-            <p><span class="about__prompt">$</span> cat status.json</p>
-            <pre><code>{terminalJson}</code></pre>
+            <div id="whoami-output"></div>
+            <div class="about__terminal-line">
+              <span class="about__prompt">$</span>
+              <span id="whoami-cursor" class="about__cursor">█</span>
+            </div>
           </div>
         </div>
       </ScrollReveal>
     </div>
   </div>
 </section>
+
+<script define:vars={{ name, bio, terminalJson }}>
+  const outputEl = document.getElementById('whoami-output');
+  const cursorEl = document.getElementById('whoami-cursor');
+
+  const CHAR_DELAY = 45;
+  const OUTPUT_DELAY = 180;
+  const STEP_DELAY = 400;
+
+  const terminalLines = terminalJson.split('\n');
+
+  const steps = [
+    {
+      command: 'whoami',
+      lines: [`> ${name}`]
+    },
+    {
+      command: 'cat bio.txt',
+      lines: bio.map(p => `> ${p}`)
+    },
+    {
+      command: 'cat status.json',
+      lines: terminalLines.map(l => `> ${l}`)
+    }
+  ];
+
+  function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function createLine(text, className) {
+    const p = document.createElement('p');
+    p.className = className;
+    p.textContent = text;
+    return p;
+  }
+
+  async function typeCommand(commandText) {
+    const cmdLine = document.createElement('div');
+    cmdLine.className = 'about__cmd-line';
+
+    const prompt = document.createElement('span');
+    prompt.className = 'about__prompt';
+    prompt.textContent = '$ ';
+
+    const cmdText = document.createElement('span');
+    cmdText.className = 'about__cmd-text';
+
+    cmdLine.appendChild(prompt);
+    cmdLine.appendChild(cmdText);
+    outputEl.appendChild(cmdLine);
+
+    for (const char of commandText) {
+      cmdText.textContent += char;
+      await wait(CHAR_DELAY);
+    }
+  }
+
+  async function showOutput(lines) {
+    for (const line of lines) {
+      await wait(OUTPUT_DELAY);
+      outputEl.appendChild(createLine(line, 'about__output'));
+    }
+  }
+
+  async function runAnimation() {
+    for (let i = 0; i < steps.length; i++) {
+      const step = steps[i];
+      await typeCommand(step.command);
+      await showOutput(step.lines);
+      if (i < steps.length - 1) {
+        await wait(STEP_DELAY);
+        outputEl.appendChild(document.createElement('br'));
+      }
+    }
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          runAnimation();
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  observer.observe(outputEl);
+</script>
 
 <style>
   .about__grid {
@@ -80,9 +175,9 @@ const terminalJson = JSON.stringify(terminal, null, 2);
     border-radius: 50%;
   }
 
-  .about__terminal-dot--red { background-color: #ff5f56; }
+  .about__terminal-dot--red    { background-color: #ff5f56; }
   .about__terminal-dot--yellow { background-color: #ffbd2e; }
-  .about__terminal-dot--green { background-color: #27c93f; }
+  .about__terminal-dot--green  { background-color: #27c93f; }
 
   .about__terminal-title {
     margin-left: auto;
@@ -94,19 +189,41 @@ const terminalJson = JSON.stringify(terminal, null, 2);
     font-size: var(--text-sm);
     color: var(--color-text-primary);
     line-height: 1.7;
+    min-height: 200px;
   }
 
-  .about__terminal-body pre {
-    margin-top: 0.5rem;
-  }
-
-  .about__terminal-body code {
-    color: var(--color-accent);
+  .about__terminal-line {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
   }
 
   .about__prompt {
     color: var(--color-accent);
     margin-right: 0.5rem;
+  }
+
+  .about__cursor {
+    color: var(--color-accent);
+    animation: blink 1s step-end infinite;
+    line-height: 1;
+  }
+
+  .about__output {
+    color: var(--color-text-secondary);
+    padding-left: 1rem;
+    font-size: var(--text-xs);
+    word-break: break-word;
+  }
+
+  /* JS-injected command lines */
+  :global(.about__cmd-line) {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  :global(.about__cmd-text) {
+    color: var(--color-text-heading);
   }
 
   @media (min-width: 1024px) {

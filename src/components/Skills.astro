@@ -1,8 +1,16 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import SkillCard from './SkillCard.astro';
 import ScrollReveal from './ScrollReveal.astro';
-import { skills } from '../data/skills';
+import config from '../data/config.json';
+
+const grouped = config.skills.reduce((acc: Record<string, string[]>, skill) => {
+  if (!acc[skill.category]) acc[skill.category] = [];
+  acc[skill.category].push(skill.name);
+  return acc;
+}, {});
+
+const categoryOrder = ['frontend', 'backend', 'devops', 'tools'];
+const categories = categoryOrder.filter(cat => grouped[cat]);
 ---
 
 <section class="section skills" id="skills">
@@ -11,30 +19,72 @@ import { skills } from '../data/skills';
       <SectionHeading number="02" title="Skills" />
     </ScrollReveal>
 
-    <div class="skills__grid reveal-stagger">
-      {skills.map((skill) => (
-        <SkillCard skill={skill} />
+    <div class="skills__groups">
+      {categories.map((category) => (
+        <ScrollReveal>
+          <div class="skills__group">
+            <h3 class="skills__category mono">// {category}</h3>
+            <div class="skills__tags">
+              {grouped[category].map((name) => (
+                <span class="skill-tag">{name}</span>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
       ))}
     </div>
   </div>
 </section>
 
 <style>
-  .skills__grid {
-    display: grid;
+  .skills__groups {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .skills__group {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
-    grid-template-columns: 1fr;
   }
 
-  @media (min-width: 640px) {
-    .skills__grid {
+  .skills__category {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .skills__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .skill-tag {
+    display: inline-block;
+    padding: 0.3rem 0.65rem;
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    transition: border-color var(--transition-base), color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .skill-tag:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    box-shadow: 0 0 12px var(--color-accent-glow);
+  }
+
+  @media (min-width: 768px) {
+    .skills__groups {
+      display: grid;
       grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .skills__grid {
-      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
     }
   }
 </style>
