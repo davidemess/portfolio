@@ -1,0 +1,360 @@
+---
+---
+
+<dialog id="palette-modal" aria-label="CYBRPNK_PALETTE_V1">
+  <div class="pm-inner">
+
+    <div class="pm-header">
+      <span class="pm-title">// CYBRPNK_PALETTE_V1</span>
+      <button class="pm-close" id="palette-close" aria-label="Chiudi">✕</button>
+    </div>
+
+    <p class="pm-label">// verde — primary</p>
+    <div class="pm-swatch-row" id="pm-greens"></div>
+
+    <div class="pm-divider"></div>
+
+    <p class="pm-label">// viola — secondary</p>
+    <div class="pm-swatch-row" id="pm-purples"></div>
+
+    <div class="pm-divider"></div>
+
+    <p class="pm-label">// dark base + neutral</p>
+    <div class="pm-swatch-row" id="pm-darks"></div>
+
+    <div class="pm-divider"></div>
+
+    <p class="pm-label">// combo — use cases</p>
+    <div id="pm-combos"></div>
+
+    <div class="pm-tag-row" id="pm-tags"></div>
+
+  </div>
+</dialog>
+
+<div class="pm-toast" id="pm-toast">hex copiato</div>
+
+<script>
+const greens = [
+  { name: 'void green', hex: '#0d1a0f', text: '#7fff6a' },
+  { name: 'matrix',     hex: '#1a3d1f', text: '#7fff6a' },
+  { name: 'terminal',   hex: '#2e7d32', text: '#b9f5be' },
+  { name: 'neon leaf',  hex: '#52c44a', text: '#0d1a0f' },
+  { name: 'acid green', hex: '#7fff6a', text: '#0d1a0f' },
+  { name: 'phosphor',   hex: '#b8ffb0', text: '#1a3d1f' },
+];
+const purples = [
+  { name: 'shadow violet', hex: '#0e0818', text: '#bf5fff' },
+  { name: 'deep pulse',    hex: '#1e0a3c', text: '#bf5fff' },
+  { name: 'core violet',   hex: '#5c1f8a', text: '#e8bfff' },
+  { name: 'cyber purple',  hex: '#9c27b0', text: '#f3e5ff' },
+  { name: 'neon violet',   hex: '#bf5fff', text: '#0e0818' },
+  { name: 'lavacide',      hex: '#e0b3ff', text: '#1e0a3c' },
+];
+const darks = [
+  { name: 'void',     hex: '#080b08', text: '#7fff6a' },
+  { name: 'carbon',   hex: '#111411', text: '#52c44a' },
+  { name: 'gunmetal', hex: '#1c201c', text: '#7fff6a' },
+  { name: 'circuit',  hex: '#2a2e2a', text: '#52c44a' },
+  { name: 'static',   hex: '#4a4f4a', text: '#b8ffb0' },
+  { name: 'ghost',    hex: '#8a9a8a', text: '#0d1a0f' },
+];
+const combos = [
+  { theme: 'terminal',   bg: '#080b08', fg: '#7fff6a', acc: '#bf5fff', label: 'TERMINAL_DARK', sub: 'bg + verde + viola' },
+  { theme: 'deep-space', bg: '#1e0a3c', fg: '#e0b3ff', acc: '#7fff6a', label: 'DEEP_SPACE',    sub: 'viola scuro + verde' },
+  { theme: 'matrix',     bg: '#0d1a0f', fg: '#b8ffb0', acc: '#9c27b0', label: 'MATRIX_GRN',   sub: 'verde scuro + viola' },
+  { theme: 'glitch',     bg: '#1c201c', fg: '#bf5fff', acc: '#52c44a', label: 'GLITCH_MODE',   sub: 'carbon + neon pair' },
+];
+const tags = [
+  { label: '#cyberpunk', color: '#7fff6a' },
+  { label: '#darkui',    color: '#7fff6a' },
+  { label: '#neon',      color: '#bf5fff' },
+  { label: '#terminal',  color: '#bf5fff' },
+  { label: '#hacker',    color: '#7fff6a' },
+  { label: '#devtools',  color: '#bf5fff' },
+];
+
+function getActiveTheme(): string {
+  try { return localStorage.getItem('portfolio-theme') ?? ''; } catch { return ''; }
+}
+
+function applyTheme(theme: string) {
+  try { localStorage.setItem('portfolio-theme', theme); } catch {}
+  if (theme) document.documentElement.setAttribute('data-theme', theme);
+  else document.documentElement.removeAttribute('data-theme');
+  // sync nav dots
+  document.querySelectorAll('.nav__theme-btn').forEach(btn => {
+    const match = (btn as HTMLElement).dataset.theme === theme;
+    btn.classList.toggle('active', match);
+    btn.setAttribute('aria-pressed', String(match));
+  });
+  renderCombos();
+}
+
+function copyHex(hex: string) {
+  navigator.clipboard.writeText(hex).catch(() => {});
+  const toast = document.getElementById('pm-toast')!;
+  toast.textContent = `${hex} copiato`;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+function makeSwatch(item: { hex: string; text: string; name: string }) {
+  const el = document.createElement('div');
+  el.className = 'pm-swatch';
+  el.style.background = item.hex;
+  el.style.color = item.text;
+  el.title = 'Copia hex';
+  el.innerHTML = `<span class="pm-swatch-name">${item.name}</span><span class="pm-swatch-hex">${item.hex}</span>`;
+  el.addEventListener('click', () => copyHex(item.hex));
+  return el;
+}
+
+function buildSwatches(id: string, arr: typeof greens) {
+  const c = document.getElementById(id)!;
+  arr.forEach(item => c.appendChild(makeSwatch(item)));
+}
+
+function renderCombos() {
+  const active = getActiveTheme();
+  const c = document.getElementById('pm-combos')!;
+  c.innerHTML = '';
+  combos.forEach(combo => {
+    const isActive = combo.theme === active;
+    const chip = document.createElement('button');
+    chip.className = 'pm-combo-chip';
+    chip.style.background = combo.bg;
+    chip.style.color = combo.fg;
+    chip.style.borderColor = isActive ? combo.acc : `${combo.acc}33`;
+    chip.setAttribute('aria-pressed', String(isActive));
+    chip.innerHTML = `
+      <div>
+        <div class="pm-chip-label" style="color:${combo.fg}">${combo.label}</div>
+        <div class="pm-chip-sub">${combo.sub}</div>
+      </div>
+      <div class="pm-chip-right">
+        <span style="width:12px;height:12px;border-radius:50%;background:${combo.fg};display:inline-block"></span>
+        <span style="width:12px;height:12px;border-radius:50%;background:${combo.acc};display:inline-block"></span>
+        ${isActive ? `<span class="pm-chip-active" style="border-color:${combo.acc};color:${combo.acc}">active</span>` : ''}
+      </div>`;
+    chip.addEventListener('click', () => applyTheme(combo.theme));
+    c.appendChild(chip);
+  });
+}
+
+function buildTags() {
+  const c = document.getElementById('pm-tags')!;
+  tags.forEach(t => {
+    const el = document.createElement('span');
+    el.className = 'pm-tag';
+    el.style.color = t.color;
+    el.textContent = t.label;
+    c.appendChild(el);
+  });
+}
+
+function initPaletteModal() {
+  const dialog = document.getElementById('palette-modal') as HTMLDialogElement | null;
+  if (!dialog) return;
+
+  // open triggers
+  document.querySelectorAll('[data-palette-open]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      renderCombos();
+      dialog.showModal();
+    });
+  });
+
+  // close button
+  document.getElementById('palette-close')?.addEventListener('click', () => dialog.close());
+
+  // click outside (on backdrop)
+  dialog.addEventListener('click', e => {
+    if (e.target === dialog) dialog.close();
+  });
+}
+
+buildSwatches('pm-greens', greens);
+buildSwatches('pm-purples', purples);
+buildSwatches('pm-darks', darks);
+renderCombos();
+buildTags();
+initPaletteModal();
+</script>
+
+<style>
+  dialog {
+    background: #080b08;
+    border: 1px solid #2a2e2a;
+    border-radius: 12px;
+    padding: 0;
+    width: min(820px, 95vw);
+    max-height: 85vh;
+    overflow-y: auto;
+    margin: auto;
+    color: #e0ffe8;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  }
+
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+  }
+
+  .pm-inner {
+    padding: 1.75rem 2rem 2rem;
+  }
+
+  .pm-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+  .pm-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: #7fff6a;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+  .pm-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, #7fff6a44, transparent);
+  }
+
+  .pm-close {
+    background: none;
+    border: 1px solid #2a2e2a;
+    color: #7fff6a88;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 1rem;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .pm-close:hover { color: #7fff6a; border-color: #7fff6a44; }
+
+  .pm-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #7fff6a88;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    padding-left: 2px;
+  }
+
+  .pm-swatch-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .pm-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #7fff6a22, #bf5fff22, transparent);
+    margin: 1.5rem 0;
+  }
+
+  .pm-tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 1.25rem;
+  }
+
+  .pm-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: #0d1a0f;
+    border: 1px solid #7fff6a44;
+    color: #7fff6a;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: transform 0.2s;
+    pointer-events: none;
+    z-index: 99999;
+  }
+  .pm-toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── JS-created elements ── */
+  :global(.pm-swatch) {
+    flex: 1;
+    min-width: 80px;
+    height: 68px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  :global(.pm-swatch:hover) { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.6); }
+  :global(.pm-swatch-name)  { font-size: 9px; letter-spacing: 0.1em; font-weight: 700; opacity: 0.85; text-transform: uppercase; line-height: 1; }
+  :global(.pm-swatch-hex)   { font-size: 10px; opacity: 0.65; line-height: 1; margin-top: 2px; }
+
+  :global(.pm-combo-chip) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    border: 1px solid;
+    text-align: left;
+    transition: filter 0.15s;
+  }
+  :global(.pm-combo-chip:hover) { filter: brightness(1.1); }
+  :global(.pm-chip-label) { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; }
+  :global(.pm-chip-sub)   { font-size: 9px; opacity: 0.6; margin-top: 3px; }
+  :global(.pm-chip-right) { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  :global(.pm-chip-active) {
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    border: 1px solid;
+    margin-left: 4px;
+  }
+  :global(.pm-tag) {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    opacity: 0.7;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  }
+
+  @media (max-width: 600px) {
+    .pm-inner { padding: 1.25rem 1rem 1.5rem; }
+    :global(.pm-swatch) { min-width: 60px; height: 56px; }
+  }
+</style>
