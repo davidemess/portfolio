@@ -23,7 +23,7 @@ import config from '../data/config.json';
       <div class="hero__avatar-wrapper">
         <div class="hero__avatar-frame">
           <img
-            src={`${import.meta.env.BASE_URL}/images/avatar.jpg`}
+            src={`${import.meta.env.BASE_URL}images/avatar.jpg`}
             alt={config.personal.name}
             class="hero__avatar"
             width="320"
@@ -59,29 +59,52 @@ import config from '../data/config.json';
 
   .hero__layout {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 3rem;
+    gap: 2rem;
   }
 
   .hero__content {
     animation: fadeInUp 0.8s ease both;
-    flex: 1;
+    width: 100%;
   }
 
   .hero__avatar-wrapper {
     flex-shrink: 0;
-    display: none;
+    order: -1;
     animation: fadeInUp 0.8s ease 0.2s both;
   }
 
   .hero__avatar-frame {
     position: relative;
-    width: 280px;
-    height: 280px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     padding: 3px;
     background: linear-gradient(135deg, var(--color-accent), transparent 60%);
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .hero__layout {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+
+    .hero__content {
+      flex: 1;
+    }
+
+    .hero__avatar-wrapper {
+      order: 0;
+    }
+
+    .hero__avatar-frame {
+      width: 280px;
+      height: 280px;
+    }
   }
 
   .hero__avatar-frame::before {
@@ -102,12 +125,6 @@ import config from '../data/config.json';
     object-position: center top;
     display: block;
     border: 2px solid var(--color-bg);
-  }
-
-  @media (min-width: 768px) {
-    .hero__avatar-wrapper {
-      display: block;
-    }
   }
 
   @media (min-width: 1024px) {
