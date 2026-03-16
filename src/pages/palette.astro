@@ -1,0 +1,316 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="CYBRPNK_PALETTE_V1" description="Color palette used in this portfolio.">
+  <div class="palette-wrap">
+
+    <div class="nav-bar">
+      <a href={`${base}/`} class="back-link">← portfolio</a>
+    </div>
+
+    <div class="palette-title">// CYBRPNK_PALETTE_V1</div>
+
+    <div class="section-label">// verde — primary</div>
+    <div class="swatch-row" id="greens"></div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">// viola — secondary</div>
+    <div class="swatch-row" id="purples"></div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">// dark base + neutral</div>
+    <div class="swatch-row" id="darks"></div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">// combo — use cases</div>
+    <div id="combos"></div>
+
+    <div class="tag-row" id="tags"></div>
+
+  </div>
+
+  <div class="copy-toast" id="toast">hex copiato</div>
+</Layout>
+
+<script>
+const greens = [
+  { name: 'void green', hex: '#0d1a0f', text: '#7fff6a' },
+  { name: 'matrix',     hex: '#1a3d1f', text: '#7fff6a' },
+  { name: 'terminal',   hex: '#2e7d32', text: '#b9f5be' },
+  { name: 'neon leaf',  hex: '#52c44a', text: '#0d1a0f' },
+  { name: 'acid green', hex: '#7fff6a', text: '#0d1a0f' },
+  { name: 'phosphor',   hex: '#b8ffb0', text: '#1a3d1f' },
+];
+const purples = [
+  { name: 'shadow violet', hex: '#0e0818', text: '#bf5fff' },
+  { name: 'deep pulse',    hex: '#1e0a3c', text: '#bf5fff' },
+  { name: 'core violet',   hex: '#5c1f8a', text: '#e8bfff' },
+  { name: 'cyber purple',  hex: '#9c27b0', text: '#f3e5ff' },
+  { name: 'neon violet',   hex: '#bf5fff', text: '#0e0818' },
+  { name: 'lavacide',      hex: '#e0b3ff', text: '#1e0a3c' },
+];
+const darks = [
+  { name: 'void',     hex: '#080b08', text: '#7fff6a' },
+  { name: 'carbon',   hex: '#111411', text: '#52c44a' },
+  { name: 'gunmetal', hex: '#1c201c', text: '#7fff6a' },
+  { name: 'circuit',  hex: '#2a2e2a', text: '#52c44a' },
+  { name: 'static',   hex: '#4a4f4a', text: '#b8ffb0' },
+  { name: 'ghost',    hex: '#8a9a8a', text: '#0d1a0f' },
+];
+const combos = [
+  { theme: 'terminal',   bg: '#080b08', fg: '#7fff6a', acc: '#bf5fff', label: 'TERMINAL_DARK', sub: 'bg + verde + viola' },
+  { theme: 'deep-space', bg: '#1e0a3c', fg: '#e0b3ff', acc: '#7fff6a', label: 'DEEP_SPACE',    sub: 'viola scuro + verde' },
+  { theme: 'matrix',     bg: '#0d1a0f', fg: '#b8ffb0', acc: '#9c27b0', label: 'MATRIX_GRN',   sub: 'verde scuro + viola' },
+  { theme: 'glitch',     bg: '#1c201c', fg: '#bf5fff', acc: '#52c44a', label: 'GLITCH_MODE',   sub: 'carbon + neon pair' },
+];
+const tags = [
+  { label: '#cyberpunk', color: '#7fff6a' },
+  { label: '#darkui',    color: '#7fff6a' },
+  { label: '#neon',      color: '#bf5fff' },
+  { label: '#terminal',  color: '#bf5fff' },
+  { label: '#hacker',    color: '#7fff6a' },
+  { label: '#devtools',  color: '#bf5fff' },
+];
+
+function getActiveTheme(): string {
+  try { return localStorage.getItem('portfolio-theme') ?? ''; } catch { return ''; }
+}
+
+function applyTheme(theme: string) {
+  try { localStorage.setItem('portfolio-theme', theme); } catch {}
+  if (theme) document.documentElement.setAttribute('data-theme', theme);
+  else document.documentElement.removeAttribute('data-theme');
+  renderCombos();
+}
+
+function copyHex(hex: string) {
+  navigator.clipboard.writeText(hex).catch(() => {});
+  const toast = document.getElementById('toast')!;
+  toast.textContent = `${hex} copiato`;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+function makeSwatch(item: { hex: string; text: string; name: string }) {
+  const el = document.createElement('div');
+  el.className = 'swatch';
+  el.style.background = item.hex;
+  el.style.color = item.text;
+  el.innerHTML = `<span class="swatch-name">${item.name}</span><span class="swatch-hex">${item.hex}</span>`;
+  el.addEventListener('click', () => copyHex(item.hex));
+  return el;
+}
+
+function buildSwatches(id: string, arr: typeof greens) {
+  const c = document.getElementById(id)!;
+  arr.forEach(item => c.appendChild(makeSwatch(item)));
+}
+
+function renderCombos() {
+  const active = getActiveTheme();
+  const c = document.getElementById('combos')!;
+  c.innerHTML = '';
+
+  combos.forEach(combo => {
+    const isActive = combo.theme === active;
+    const row = document.createElement('div');
+    row.className = 'combo-row';
+
+    const chip = document.createElement('button');
+    chip.className = 'combo-chip';
+    chip.style.background = combo.bg;
+    chip.style.color = combo.fg;
+    chip.style.borderColor = isActive ? combo.acc : `${combo.acc}33`;
+    chip.setAttribute('aria-pressed', String(isActive));
+
+    chip.innerHTML = `
+      <div>
+        <div class="chip-label" style="color:${combo.fg}">${combo.label}</div>
+        <div class="chip-sub">${combo.sub}</div>
+      </div>
+      <div class="chip-right">
+        <div style="width:14px;height:14px;border-radius:50%;background:${combo.fg}"></div>
+        <div style="width:14px;height:14px;border-radius:50%;background:${combo.acc}"></div>
+        ${isActive ? `<span class="chip-active" style="border-color:${combo.acc};color:${combo.acc}">active</span>` : ''}
+      </div>`;
+
+    chip.addEventListener('click', () => applyTheme(combo.theme));
+    row.appendChild(chip);
+    c.appendChild(row);
+  });
+}
+
+function buildTags() {
+  const c = document.getElementById('tags')!;
+  tags.forEach(t => {
+    const el = document.createElement('span');
+    el.className = 'tag';
+    el.style.color = t.color;
+    el.textContent = t.label;
+    c.appendChild(el);
+  });
+}
+
+buildSwatches('greens', greens);
+buildSwatches('purples', purples);
+buildSwatches('darks', darks);
+renderCombos();
+buildTags();
+</script>
+
+<style>
+  /* Fixed dark palette — colors are independent of the portfolio theme */
+  .palette-wrap {
+    background: #080b08;
+    min-height: 100vh;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+    color: #e0ffe8;
+    padding: 1.5rem 2rem 3rem;
+  }
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #7fff6a88;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: #7fff6a; }
+
+  .palette-title {
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: #7fff6a;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .palette-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, #7fff6a44, transparent);
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #7fff6a88;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    padding-left: 2px;
+  }
+
+  .swatch-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* JS-created elements need :global() — Astro scoping doesn't reach them */
+  :global(.swatch) {
+    flex: 1;
+    min-width: 80px;
+    height: 68px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  :global(.swatch:hover) { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.6); }
+  :global(.swatch-name)  { font-size: 9px; letter-spacing: 0.1em; font-weight: 700; opacity: 0.85; text-transform: uppercase; line-height: 1; }
+  :global(.swatch-hex)   { font-size: 10px; opacity: 0.65; line-height: 1; margin-top: 2px; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #7fff6a22, #bf5fff22, transparent);
+    margin: 1.5rem 0;
+  }
+
+  :global(.combo-row) { margin-bottom: 8px; }
+
+  :global(.combo-chip) {
+    width: 100%;
+    border-radius: 6px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    border: 1px solid;
+    text-align: left;
+    transition: border-color 0.15s, filter 0.15s;
+  }
+  :global(.combo-chip:hover) { filter: brightness(1.08); }
+  :global(.chip-label) { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; }
+  :global(.chip-sub)   { font-size: 9px; opacity: 0.6; margin-top: 3px; }
+  :global(.chip-right) { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  :global(.chip-active) {
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    border: 1px solid;
+    opacity: 0.85;
+    margin-left: 4px;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1.25rem; }
+  :global(.tag) {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    opacity: 0.7;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  }
+
+  .copy-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: #0d1a0f;
+    border: 1px solid #7fff6a44;
+    color: #7fff6a;
+    font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: transform 0.2s;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .copy-toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 600px) {
+    .palette-wrap { padding: 1.25rem 1rem 3rem; }
+    .swatch { min-width: 60px; height: 56px; }
+  }
+</style>
