@@ -2,7 +2,7 @@
 
 Personal portfolio website built with [Astro](https://astro.build), deployed on GitHub Pages.
 
-**Live site:** [portfolio.davidemessori.dev](https://portfolio.davidemessori.dev)
+**Live site:** [davidemess.github.io/portfolio](https://davidemess.github.io/portfolio/)
 
 ## Tech Stack
 
