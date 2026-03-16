@@ -187,21 +187,22 @@ const links = [
   .nav__themes {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 10px;
   }
 
   .nav__theme-btn {
-    width: 11px;
-    height: 11px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    border: 2px solid transparent;
+    border: none;
     padding: 0;
     cursor: pointer;
-    opacity: 0.45;
+    opacity: 0.5;
+    flex-shrink: 0;
     transition: opacity var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
   }
 
-  /* default: accent #00FF41 */
+  /* default: solid accent green */
   .nav__theme-btn[data-theme=""]           { background-color: #00FF41; }
   /* TERMINAL_DARK: fg:#7fff6a acc:#bf5fff */
   .nav__theme-btn[data-theme="terminal"]   { background: linear-gradient(135deg, #7fff6a 50%, #bf5fff 50%); }
@@ -213,15 +214,16 @@ const links = [
   .nav__theme-btn[data-theme="glitch"]     { background: linear-gradient(135deg, #bf5fff 50%, #52c44a 50%); }
 
   .nav__theme-btn:hover {
-    opacity: 0.75;
-    transform: scale(1.2);
+    opacity: 0.85;
+    transform: scale(1.15);
   }
 
+  /* doppio ring: prima shadow "scava" il bg, la seconda disegna il bordo colorato */
   .nav__theme-btn.active {
     opacity: 1;
-    transform: scale(1.25);
-    border-color: var(--color-accent);
-    box-shadow: 0 0 6px var(--color-accent-glow);
+    box-shadow:
+      0 0 0 2px var(--color-bg-primary),
+      0 0 0 4px var(--color-accent);
   }
 
   @media (min-width: 1024px) {
