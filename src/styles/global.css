@@ -73,21 +73,21 @@
   --color-accent-dim:     #9c27b0;
   --color-accent-glow:    rgba(191, 95, 255, 0.15);
   --color-text-primary:   #7fff6a;
-  --color-text-secondary: #4a7a4a;
+  --color-text-secondary: #5ca05c;  /* era #4a7a4a — contrasto ~3.7:1, ora ~5.2:1 */
   --color-text-heading:   #b8ffb0;
   --color-border:         #2a2e2a;
 }
 
 /* DEEP_SPACE  bg:#1e0a3c  fg:#e0b3ff  acc:#7fff6a */
 :root[data-theme="deep-space"] {
-  --color-bg-primary:     #1e0a3c;
-  --color-bg-secondary:   #160d2a;
+  --color-bg-primary:     #160d2a;  /* page bg (più scuro) */
+  --color-bg-secondary:   #1e0a3c;  /* card bg (palette bg) — era invertito! */
   --color-bg-tertiary:    #2a1550;
   --color-accent:         #7fff6a;
   --color-accent-dim:     #52c44a;
   --color-accent-glow:    rgba(127, 255, 106, 0.15);
   --color-text-primary:   #e0b3ff;
-  --color-text-secondary: #9c7acc;
+  --color-text-secondary: #b39ce0;  /* era #9c7acc — contrasto migliorato */
   --color-text-heading:   #f3e5ff;
   --color-border:         #3a1a6a;
 }
@@ -97,26 +97,26 @@
   --color-bg-primary:     #0d1a0f;
   --color-bg-secondary:   #1a3d1f;
   --color-bg-tertiary:    #1f4a25;
-  --color-accent:         #9c27b0;
-  --color-accent-dim:     #5c1f8a;
-  --color-accent-glow:    rgba(156, 39, 176, 0.15);
+  --color-accent:         #bf5fff;  /* era #9c27b0 — contrasto 2.9:1 su verde scuro, inutilizzabile */
+  --color-accent-dim:     #9c27b0;
+  --color-accent-glow:    rgba(191, 95, 255, 0.15);
   --color-text-primary:   #b8ffb0;
-  --color-text-secondary: #5a8a5a;
+  --color-text-secondary: #6ab06a;  /* era #5a8a5a — leggermente più leggibile */
   --color-text-heading:   #e0ffe8;
   --color-border:         #1e3a1f;
 }
 
 /* GLITCH_MODE  bg:#1c201c  fg:#bf5fff  acc:#52c44a */
 :root[data-theme="glitch"] {
-  --color-bg-primary:     #1c201c;
-  --color-bg-secondary:   #111411;
+  --color-bg-primary:     #141814;  /* page bg (leggermente più scuro) */
+  --color-bg-secondary:   #1c201c;  /* card bg (palette bg) — era invertito! */
   --color-bg-tertiary:    #252a25;
   --color-accent:         #52c44a;
   --color-accent-dim:     #2e7d32;
   --color-accent-glow:    rgba(82, 196, 74, 0.15);
-  --color-text-primary:   #bf5fff;
-  --color-text-secondary: #7a3aaa;
-  --color-text-heading:   #e0b3ff;
+  --color-text-primary:   #d4a8ff;  /* era #bf5fff — ammorbidito per lettura lunga */
+  --color-text-secondary: #a060d0;  /* era #7a3aaa — contrasto ~3:1, ora ~5:1 */
+  --color-text-heading:   #bf5fff;  /* neon viola solo per heading */
   --color-border:         #2a2e2a;
 }
 
