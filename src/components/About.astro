@@ -5,7 +5,8 @@ import config from '../data/config.json';
 
 const { bio, terminal } = config.about;
 const terminalJson = JSON.stringify(terminal, null, 2);
-const { name } = config.personal;
+const { name, role } = config.personal;
+const jsonLines = terminalJson.split('\n');
 ---
 
 <section class="section about" id="about">
@@ -14,222 +15,410 @@ const { name } = config.personal;
       <SectionHeading number="01" title="whoami" />
     </ScrollReveal>
 
-    <div class="about__grid">
-      <ScrollReveal>
-        <div class="about__text">
-          {bio.map((paragraph) => (
-            <p>{paragraph}</p>
-          ))}
-        </div>
-      </ScrollReveal>
+    <ScrollReveal>
+      <div class="tmux">
+        <div class="tmux__panes">
 
-      <ScrollReveal>
-        <div class="about__terminal">
-          <div class="about__terminal-header">
-            <span class="about__terminal-dot about__terminal-dot--red"></span>
-            <span class="about__terminal-dot about__terminal-dot--yellow"></span>
-            <span class="about__terminal-dot about__terminal-dot--green"></span>
-            <span class="about__terminal-title mono">profile.sh</span>
-          </div>
-          <div class="about__terminal-body">
-            <div id="whoami-output"></div>
-            <div class="about__terminal-line">
-              <span class="about__prompt">$</span>
-              <span id="whoami-cursor" class="about__cursor">█</span>
+          <!-- ── TOP-LEFT: whoami ── -->
+          <div class="tmux__pane tmux__pane--whoami">
+            <div class="tmux__pane-header">
+              <span class="tmux__pane-label">whoami</span>
+            </div>
+            <div class="tmux__pane-body">
+              <div class="tmux__stack">
+                <div class="tmux__ghost" aria-hidden="true">
+                  <div class="tmux__cmd-line">
+                    <span class="tmux__prompt">$</span>
+                    <span class="tmux__cmd-text">whoami</span>
+                  </div>
+                  <p class="tmux__out tmux__out--name">
+                    <span class="tmux__prefix">&gt;&nbsp;</span>{name} — {role}
+                  </p>
+                </div>
+                <div id="output-whoami"></div>
+              </div>
+              <div class="tmux__cursor-line">
+                <span class="tmux__prompt">$</span>
+                <span class="tmux__cursor">█</span>
+              </div>
             </div>
           </div>
+
+          <!-- ── BOTTOM-LEFT: cat bio.txt ── -->
+          <div class="tmux__pane tmux__pane--bio">
+            <div class="tmux__pane-header">
+              <span class="tmux__pane-label">cat bio.txt</span>
+            </div>
+            <div class="tmux__pane-body">
+              <div class="tmux__stack">
+                <div class="tmux__ghost" aria-hidden="true">
+                  <div class="tmux__cmd-line">
+                    <span class="tmux__prompt">$</span>
+                    <span class="tmux__cmd-text">cat bio.txt</span>
+                  </div>
+                  {bio.map((p) => (
+                    <p class="tmux__out tmux__out--bio">{p}</p>
+                  ))}
+                </div>
+                <div id="output-bio"></div>
+              </div>
+              <div class="tmux__cursor-line">
+                <span class="tmux__prompt">$</span>
+                <span class="tmux__cursor">█</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── RIGHT (spans both rows): cat status.json ── -->
+          <div class="tmux__pane tmux__pane--json">
+            <div class="tmux__pane-header">
+              <span class="tmux__pane-label">cat status.json</span>
+            </div>
+            <div class="tmux__pane-body">
+              <div class="tmux__stack">
+                <div class="tmux__ghost" aria-hidden="true">
+                  <div class="tmux__cmd-line">
+                    <span class="tmux__prompt">$</span>
+                    <span class="tmux__cmd-text">cat status.json</span>
+                  </div>
+                  {jsonLines.map((l) => (
+                    <p class="tmux__out tmux__out--json">
+                      <span class="tmux__prefix">&gt;&nbsp;</span>{l}
+                    </p>
+                  ))}
+                </div>
+                <div id="output-json"></div>
+              </div>
+              <div class="tmux__cursor-line">
+                <span class="tmux__prompt">$</span>
+                <span class="tmux__cursor">█</span>
+              </div>
+            </div>
+          </div>
+
         </div>
-      </ScrollReveal>
-    </div>
+
+        <!-- ── Status bar ── -->
+        <div class="tmux__statusbar">
+          <div class="tmux__statusbar-left">
+            <span class="tmux__session">davide-messori</span>
+            <span class="tmux__win tmux__win--active">0&nbsp;profile.sh&nbsp;●</span>
+          </div>
+          <div class="tmux__statusbar-right">
+            <span id="tmux-clock"></span>
+          </div>
+        </div>
+      </div>
+    </ScrollReveal>
   </div>
 </section>
 
-<script define:vars={{ name, bio, terminalJson }}>
-  const outputEl = document.getElementById('whoami-output');
-  const cursorEl = document.getElementById('whoami-cursor');
+<script define:vars={{ name, role, bio, terminalJson }}>
+  const CHAR_DELAY = 40;
+  const OUTPUT_DELAY = 80;
+  const STEP_DELAY = 320;
 
-  const CHAR_DELAY = 45;
-  const OUTPUT_DELAY = 180;
-  const STEP_DELAY = 400;
-
-  const terminalLines = terminalJson.split('\n');
-
-  const steps = [
-    {
-      command: 'whoami',
-      lines: [`> ${name}`]
-    },
-    {
-      command: 'cat bio.txt',
-      lines: bio.map(p => `> ${p}`)
-    },
-    {
-      command: 'cat status.json',
-      lines: terminalLines.map(l => `> ${l}`)
-    }
-  ];
+  const jsonLines = terminalJson.split('\n');
 
   function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  function createLine(text, className) {
+  function createOutputLine(text, type) {
     const p = document.createElement('p');
-    p.className = className;
-    p.textContent = text;
+    p.className = `tmux__out tmux__out--${type}`;
+    if (type === 'bio') {
+      p.textContent = text;
+    } else {
+      const prefix = document.createElement('span');
+      prefix.className = 'tmux__prefix';
+      prefix.textContent = '> ';
+      p.appendChild(prefix);
+      p.appendChild(document.createTextNode(text));
+    }
     return p;
   }
 
-  async function typeCommand(commandText) {
+  async function typeCommand(el, command) {
     const cmdLine = document.createElement('div');
-    cmdLine.className = 'about__cmd-line';
-
+    cmdLine.className = 'tmux__cmd-line';
     const prompt = document.createElement('span');
-    prompt.className = 'about__prompt';
-    prompt.textContent = '$ ';
-
+    prompt.className = 'tmux__prompt';
+    prompt.textContent = '$';
     const cmdText = document.createElement('span');
-    cmdText.className = 'about__cmd-text';
-
+    cmdText.className = 'tmux__cmd-text';
     cmdLine.appendChild(prompt);
     cmdLine.appendChild(cmdText);
-    outputEl.appendChild(cmdLine);
-
-    for (const char of commandText) {
+    el.appendChild(cmdLine);
+    for (const char of command) {
       cmdText.textContent += char;
       await wait(CHAR_DELAY);
     }
   }
 
-  async function showOutput(lines) {
-    for (const line of lines) {
+  async function showOutput(el, lines) {
+    for (const { text, type } of lines) {
       await wait(OUTPUT_DELAY);
-      outputEl.appendChild(createLine(line, 'about__output'));
+      el.appendChild(createOutputLine(text, type));
     }
   }
 
   async function runAnimation() {
-    for (let i = 0; i < steps.length; i++) {
-      const step = steps[i];
-      await typeCommand(step.command);
-      await showOutput(step.lines);
-      if (i < steps.length - 1) {
-        await wait(STEP_DELAY);
-        outputEl.appendChild(document.createElement('br'));
-      }
-    }
+    const outWhoami = document.getElementById('output-whoami');
+    const outBio    = document.getElementById('output-bio');
+    const outJson   = document.getElementById('output-json');
+
+    await typeCommand(outWhoami, 'whoami');
+    await showOutput(outWhoami, [{ text: `${name} — ${role}`, type: 'name' }]);
+
+    await wait(STEP_DELAY);
+
+    await typeCommand(outBio, 'cat bio.txt');
+    await showOutput(outBio, bio.map(p => ({ text: p, type: 'bio' })));
+
+    await wait(STEP_DELAY);
+
+    await typeCommand(outJson, 'cat status.json');
+    await showOutput(outJson, jsonLines.map(l => ({ text: l, type: 'json' })));
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          observer.disconnect();
-          runAnimation();
-        }
-      });
-    },
-    { threshold: 0.3 }
-  );
+  // Live clock
+  function updateClock() {
+    const el = document.getElementById('tmux-clock');
+    if (!el) return;
+    const now = new Date();
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    el.textContent = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}  ${hh}:${mm}`;
+  }
+  updateClock();
+  setInterval(updateClock, 60000);
 
-  observer.observe(outputEl);
+  // Scroll-triggered
+  const trigger = document.querySelector('.tmux');
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        observer.disconnect();
+        runAnimation();
+      }
+    },
+    { threshold: 0.15 }
+  );
+  if (trigger) observer.observe(trigger);
 </script>
 
 <style>
-  .about__grid {
-    display: grid;
-    gap: 3rem;
-  }
-
-  .about__text {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .about__text p {
-    color: var(--color-text-primary);
-    line-height: 1.8;
-  }
-
-  /* Terminal decoration */
-  .about__terminal {
-    background-color: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
+  /* ── Shell ── */
+  .tmux {
+    background-color: #0e0e0e;
+    border: 1px solid #2a2a2a;
     border-radius: var(--radius-md);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  }
+
+  /* ── 3-pane grid ──
+     whoami │ json
+     ───────│
+     bio    │ json
+  */
+  .tmux__panes {
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    grid-template-areas:
+      "whoami json"
+      "bio    json";
+  }
+
+  .tmux__pane--whoami {
+    grid-area: whoami;
+    border-right: 1px solid #2a2a2a;
+  }
+
+  .tmux__pane--bio {
+    grid-area: bio;
+    border-right: 1px solid #2a2a2a;
+  }
+
+  .tmux__pane--json {
+    grid-area: json;
+  }
+
+  /* ── Pane header: ─ label ─────────── ── */
+  .tmux__pane-header {
+    display: flex;
+    align-items: center;
+    height: 1.5rem;
+    padding: 0 0.75rem;
+    gap: 0.5rem;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .tmux__pane-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #2a2a2a;
+  }
+
+  .tmux__pane-label {
+    font-size: 0.65rem;
+    color: #555;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Pane body ── */
+  .tmux__pane-body {
+    padding: 0.875rem 1rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+
+  /* Ghost + output stacked in the same grid cell */
+  .tmux__stack {
+    display: grid;
+    grid-template-areas: 'layer';
+  }
+
+  .tmux__ghost,
+  .tmux__stack > div {
+    grid-area: layer;
+  }
+
+  /* Ghost is invisible but holds the terminal height */
+  .tmux__ghost {
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .tmux__cursor-line {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  .tmux__prompt {
+    color: var(--color-accent);
+    font-weight: 700;
+    user-select: none;
+  }
+
+  .tmux__cursor {
+    color: var(--color-accent);
+    animation: blink 1s step-end infinite;
+  }
+
+  /* ── Status bar ── */
+  .tmux__statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 1.75rem;
+    background-color: #111;
+    border-top: 1px solid #2a2a2a;
+    font-size: var(--text-xs);
     overflow: hidden;
   }
 
-  .about__terminal-header {
+  .tmux__statusbar-left {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+  }
+
+  .tmux__session {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background-color: var(--color-bg-tertiary);
-    border-bottom: 1px solid var(--color-border);
+    padding: 0 0.875rem;
+    background-color: var(--color-accent);
+    color: #000;
+    font-weight: 700;
+    letter-spacing: 0.03em;
   }
 
-  .about__terminal-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+  .tmux__win {
+    display: flex;
+    align-items: center;
+    padding: 0 0.875rem;
+    color: var(--color-text-secondary);
   }
 
-  .about__terminal-dot--red    { background-color: #ff5f56; }
-  .about__terminal-dot--yellow { background-color: #ffbd2e; }
-  .about__terminal-dot--green  { background-color: #27c93f; }
-
-  .about__terminal-title {
-    margin-left: auto;
+  .tmux__win--active {
+    color: var(--color-text-heading);
+    background-color: #1a1a1a;
   }
 
-  .about__terminal-body {
-    padding: 1.25rem;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-text-primary);
-    line-height: 1.7;
-    min-height: 200px;
+  .tmux__statusbar-right {
+    padding: 0 0.875rem;
+    color: var(--color-text-secondary);
   }
 
-  .about__terminal-line {
+  /* ── Mobile: single column ── */
+  @media (max-width: 767px) {
+    .tmux__panes {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "whoami"
+        "bio"
+        "json";
+    }
+
+    .tmux__pane--whoami,
+    .tmux__pane--bio {
+      border-right: none;
+    }
+  }
+
+  /* ── JS-injected elements ── */
+  :global(.tmux__cmd-line) {
     display: flex;
     gap: 0.5rem;
+    align-items: baseline;
+  }
+
+  :global(.tmux__cmd-text) {
+    color: var(--color-text-heading);
+    font-weight: 600;
+  }
+
+  :global(.tmux__prefix) {
+    color: var(--color-accent);
+    opacity: 0.4;
+    user-select: none;
+  }
+
+  :global(.tmux__out--name) {
+    color: var(--color-text-heading);
+    font-size: var(--text-base);
+    font-weight: 700;
+    padding-left: 1rem;
     margin-top: 0.25rem;
   }
 
-  .about__prompt {
-    color: var(--color-accent);
-    margin-right: 0.5rem;
-  }
-
-  .about__cursor {
-    color: var(--color-accent);
-    animation: blink 1s step-end infinite;
-    line-height: 1;
-  }
-
-  .about__output {
-    color: var(--color-text-secondary);
-    padding-left: 1rem;
-    font-size: var(--text-xs);
+  :global(.tmux__out--bio) {
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+    line-height: 1.9;
+    padding: 0.15rem 0.875rem;
+    margin-left: 0.125rem;
+    margin-top: 0.1rem;
+    border-left: 2px solid #2a2a2a;
     word-break: break-word;
   }
 
-  /* JS-injected command lines */
-  :global(.about__cmd-line) {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  :global(.about__cmd-text) {
-    color: var(--color-text-heading);
-  }
-
-  @media (min-width: 1024px) {
-    .about__grid {
-      grid-template-columns: 3fr 2fr;
-      align-items: start;
-    }
+  :global(.tmux__out--json) {
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    padding-left: 1rem;
+    line-height: 1.75;
+    opacity: 0.7;
+    margin-top: 0.05rem;
   }
 </style>
