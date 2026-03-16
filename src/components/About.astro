@@ -37,7 +37,7 @@ const jsonLines = terminalJson.split('\n');
                 </div>
                 <div id="output-whoami"></div>
               </div>
-              <div class="tmux__cursor-line">
+              <div class="tmux__cursor-line tmux__cursor-line--hidden" id="cursor-whoami">
                 <span class="tmux__prompt">$</span>
                 <span class="tmux__cursor">█</span>
               </div>
@@ -62,7 +62,7 @@ const jsonLines = terminalJson.split('\n');
                 </div>
                 <div id="output-bio"></div>
               </div>
-              <div class="tmux__cursor-line">
+              <div class="tmux__cursor-line tmux__cursor-line--hidden" id="cursor-bio">
                 <span class="tmux__prompt">$</span>
                 <span class="tmux__cursor">█</span>
               </div>
@@ -89,7 +89,7 @@ const jsonLines = terminalJson.split('\n');
                 </div>
                 <div id="output-json"></div>
               </div>
-              <div class="tmux__cursor-line">
+              <div class="tmux__cursor-line tmux__cursor-line--hidden" id="cursor-json">
                 <span class="tmux__prompt">$</span>
                 <span class="tmux__cursor">█</span>
               </div>
@@ -163,6 +163,11 @@ const jsonLines = terminalJson.split('\n');
     }
   }
 
+  function showCursor(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('tmux__cursor-line--hidden');
+  }
+
   async function runAnimation() {
     const outWhoami = document.getElementById('output-whoami');
     const outBio    = document.getElementById('output-bio');
@@ -170,16 +175,19 @@ const jsonLines = terminalJson.split('\n');
 
     await typeCommand(outWhoami, 'whoami');
     await showOutput(outWhoami, [{ text: `${name} — ${role}`, type: 'name' }]);
+    showCursor('cursor-whoami');
 
     await wait(STEP_DELAY);
 
     await typeCommand(outBio, 'cat bio.txt');
     await showOutput(outBio, bio.map(p => ({ text: p, type: 'bio' })));
+    showCursor('cursor-bio');
 
     await wait(STEP_DELAY);
 
     await typeCommand(outJson, 'cat status.json');
     await showOutput(outJson, jsonLines.map(l => ({ text: l, type: 'json' })));
+    showCursor('cursor-json');
   }
 
   // Live clock
@@ -302,6 +310,10 @@ const jsonLines = terminalJson.split('\n');
     display: flex;
     gap: 0.5rem;
     margin-top: 0.35rem;
+  }
+
+  .tmux__cursor-line--hidden {
+    visibility: hidden;
   }
 
   .tmux__prompt {
