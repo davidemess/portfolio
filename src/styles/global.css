@@ -61,34 +61,63 @@
   --radius-lg: 12px;
 }
 
-/* ===== THEMES ===== */
+/* ===== THEMES — CYBRPNK_PALETTE_V1 combos ===== */
+/* Each combo: bg · fg (text-primary) · acc (accent)  */
 
-/* Purple — GLITCH_MODE / DEEP_SPACE */
-:root[data-theme="purple"] {
-  --color-bg-primary:    #0e0818;
-  --color-bg-secondary:  #160d2a;
-  --color-bg-tertiary:   #1e0a3c;
-  --color-accent:        #bf5fff;
-  --color-accent-dim:    #9c27b0;
-  --color-accent-glow:   rgba(191, 95, 255, 0.15);
-  --color-text-primary:  #ddc4ff;
-  --color-text-secondary:#7a5a9a;
-  --color-text-heading:  #f3e5ff;
-  --color-border:        #2e1a4a;
+/* TERMINAL_DARK  bg:#080b08  fg:#7fff6a  acc:#bf5fff */
+:root[data-theme="terminal"] {
+  --color-bg-primary:     #080b08;
+  --color-bg-secondary:   #111411;
+  --color-bg-tertiary:    #1c201c;
+  --color-accent:         #bf5fff;
+  --color-accent-dim:     #9c27b0;
+  --color-accent-glow:    rgba(191, 95, 255, 0.15);
+  --color-text-primary:   #7fff6a;
+  --color-text-secondary: #4a7a4a;
+  --color-text-heading:   #b8ffb0;
+  --color-border:         #2a2e2a;
 }
 
-/* Matrix — MATRIX_GRN / TERMINAL_DARK */
+/* DEEP_SPACE  bg:#1e0a3c  fg:#e0b3ff  acc:#7fff6a */
+:root[data-theme="deep-space"] {
+  --color-bg-primary:     #1e0a3c;
+  --color-bg-secondary:   #160d2a;
+  --color-bg-tertiary:    #2a1550;
+  --color-accent:         #7fff6a;
+  --color-accent-dim:     #52c44a;
+  --color-accent-glow:    rgba(127, 255, 106, 0.15);
+  --color-text-primary:   #e0b3ff;
+  --color-text-secondary: #9c7acc;
+  --color-text-heading:   #f3e5ff;
+  --color-border:         #3a1a6a;
+}
+
+/* MATRIX_GRN  bg:#0d1a0f  fg:#b8ffb0  acc:#9c27b0 */
 :root[data-theme="matrix"] {
-  --color-bg-primary:    #080b08;
-  --color-bg-secondary:  #0d1a0f;
-  --color-bg-tertiary:   #1a3d1f;
-  --color-accent:        #7fff6a;
-  --color-accent-dim:    #52c44a;
-  --color-accent-glow:   rgba(127, 255, 106, 0.15);
-  --color-text-primary:  #b8ffb0;
-  --color-text-secondary:#5a8a5a;
-  --color-text-heading:  #e0ffe8;
-  --color-border:        #1e3a1f;
+  --color-bg-primary:     #0d1a0f;
+  --color-bg-secondary:   #1a3d1f;
+  --color-bg-tertiary:    #1f4a25;
+  --color-accent:         #9c27b0;
+  --color-accent-dim:     #5c1f8a;
+  --color-accent-glow:    rgba(156, 39, 176, 0.15);
+  --color-text-primary:   #b8ffb0;
+  --color-text-secondary: #5a8a5a;
+  --color-text-heading:   #e0ffe8;
+  --color-border:         #1e3a1f;
+}
+
+/* GLITCH_MODE  bg:#1c201c  fg:#bf5fff  acc:#52c44a */
+:root[data-theme="glitch"] {
+  --color-bg-primary:     #1c201c;
+  --color-bg-secondary:   #111411;
+  --color-bg-tertiary:    #252a25;
+  --color-accent:         #52c44a;
+  --color-accent-dim:     #2e7d32;
+  --color-accent-glow:    rgba(82, 196, 74, 0.15);
+  --color-text-primary:   #bf5fff;
+  --color-text-secondary: #7a3aaa;
+  --color-text-heading:   #e0b3ff;
+  --color-border:         #2a2e2a;
 }
 
 /* ===== RESET ===== */

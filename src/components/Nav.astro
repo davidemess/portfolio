@@ -28,9 +28,11 @@ const links = [
 
     <div class="nav__controls">
       <div class="nav__themes" role="group" aria-label="Color theme">
-        <button class="nav__theme-btn" data-theme="" aria-label="Green theme" title="Green"></button>
-        <button class="nav__theme-btn" data-theme="matrix" aria-label="Matrix theme" title="Matrix"></button>
-        <button class="nav__theme-btn" data-theme="purple" aria-label="Purple theme" title="Purple"></button>
+        <button class="nav__theme-btn" data-theme="" aria-label="Default theme" title="Default"></button>
+        <button class="nav__theme-btn" data-theme="terminal" aria-label="Terminal Dark theme" title="Terminal Dark"></button>
+        <button class="nav__theme-btn" data-theme="deep-space" aria-label="Deep Space theme" title="Deep Space"></button>
+        <button class="nav__theme-btn" data-theme="matrix" aria-label="Matrix Green theme" title="Matrix Green"></button>
+        <button class="nav__theme-btn" data-theme="glitch" aria-label="Glitch Mode theme" title="Glitch Mode"></button>
       </div>
 
       <button
@@ -199,9 +201,16 @@ const links = [
     transition: opacity var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
   }
 
-  .nav__theme-btn[data-theme=""]     { background-color: #00FF41; }
-  .nav__theme-btn[data-theme="matrix"] { background-color: #7fff6a; }
-  .nav__theme-btn[data-theme="purple"] { background-color: #bf5fff; }
+  /* default: accent #00FF41 */
+  .nav__theme-btn[data-theme=""]           { background-color: #00FF41; }
+  /* TERMINAL_DARK: fg:#7fff6a acc:#bf5fff */
+  .nav__theme-btn[data-theme="terminal"]   { background: linear-gradient(135deg, #7fff6a 50%, #bf5fff 50%); }
+  /* DEEP_SPACE: fg:#e0b3ff acc:#7fff6a */
+  .nav__theme-btn[data-theme="deep-space"] { background: linear-gradient(135deg, #e0b3ff 50%, #7fff6a 50%); }
+  /* MATRIX_GRN: fg:#b8ffb0 acc:#9c27b0 */
+  .nav__theme-btn[data-theme="matrix"]     { background: linear-gradient(135deg, #b8ffb0 50%, #9c27b0 50%); }
+  /* GLITCH_MODE: fg:#bf5fff acc:#52c44a */
+  .nav__theme-btn[data-theme="glitch"]     { background: linear-gradient(135deg, #bf5fff 50%, #52c44a 50%); }
 
   .nav__theme-btn:hover {
     opacity: 0.75;
