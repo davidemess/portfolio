@@ -2,6 +2,9 @@
 import SectionHeading from './SectionHeading.astro';
 import ScrollReveal from './ScrollReveal.astro';
 import config from '../data/config.json';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale ?? 'en');
 
 const grouped = config.skills.reduce((acc: Record<string, string[]>, skill) => {
   if (!acc[skill.category]) acc[skill.category] = [];
@@ -16,7 +19,9 @@ const categories = categoryOrder.filter(cat => grouped[cat]);
 <section class="section skills" id="skills">
   <div class="container">
     <ScrollReveal>
-      <SectionHeading number="02" title="Skills" />
+      <SectionHeading number="02">
+        <Fragment slot="title">{t('sections.skills')}</Fragment>
+      </SectionHeading>
     </ScrollReveal>
 
     <div class="skills__groups">

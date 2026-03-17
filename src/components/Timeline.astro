@@ -3,17 +3,22 @@ import SectionHeading from './SectionHeading.astro';
 import TimelineItem from './TimelineItem.astro';
 import ScrollReveal from './ScrollReveal.astro';
 import { timeline } from '../data/timeline';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale ?? 'en');
 ---
 
 <section class="section timeline" id="career">
   <div class="container">
     <ScrollReveal>
-      <SectionHeading number="04" title="Career" />
+      <SectionHeading number="04">
+        <Fragment slot="title">{t('sections.career')}</Fragment>
+      </SectionHeading>
     </ScrollReveal>
 
     <div class="timeline__track reveal-stagger">
       {timeline.map((entry, i) => (
-        <TimelineItem entry={entry} index={i} />
+        <TimelineItem entry={entry} index={i} description={t(`timeline.${i}.description`)} />
       ))}
     </div>
   </div>
@@ -25,7 +30,6 @@ import { timeline } from '../data/timeline';
     padding-left: 0.5rem;
   }
 
-  /* Vertical line */
   .timeline__track::before {
     content: '';
     position: absolute;
@@ -37,13 +41,7 @@ import { timeline } from '../data/timeline';
   }
 
   @media (min-width: 1024px) {
-    .timeline__track {
-      padding-left: 0;
-    }
-
-    .timeline__track::before {
-      left: 50%;
-      transform: translateX(-50%);
-    }
+    .timeline__track { padding-left: 0; }
+    .timeline__track::before { left: 50%; transform: translateX(-50%); }
   }
 </style>

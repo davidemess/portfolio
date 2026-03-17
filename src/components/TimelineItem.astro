@@ -4,9 +4,10 @@ import type { TimelineEntry } from '../types';
 interface Props {
   entry: TimelineEntry;
   index: number;
+  description: string;
 }
 
-const { entry, index } = Astro.props;
+const { entry, index, description } = Astro.props;
 const side = index % 2 === 0 ? 'left' : 'right';
 ---
 
@@ -16,7 +17,7 @@ const side = index % 2 === 0 ? 'left' : 'right';
     <span class="timeline-item__year mono">{entry.year}</span>
     <h3 class="timeline-item__title">{entry.title}</h3>
     <span class="timeline-item__company">{entry.company}</span>
-    <p class="timeline-item__description">{entry.description}</p>
+    <p class="timeline-item__description">{description}</p>
   </div>
 </div>
 

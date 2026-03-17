@@ -1,7 +1,7 @@
 ---
 interface Props {
   number: string;
-  title: string;
+  title?: string;
   id?: string;
 }
 
@@ -10,7 +10,9 @@ const { number, title, id } = Astro.props;
 
 <div class="section-heading" id={id}>
   <span class="section-heading__number mono">// {number}</span>
-  <h2 class="section-heading__title">{title}</h2>
+  <h2 class="section-heading__title">
+    {Astro.slots.has('title') ? <slot name="title" /> : title}
+  </h2>
 </div>
 
 <style>

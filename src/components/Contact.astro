@@ -4,19 +4,22 @@ import Button from './Button.astro';
 import ScrollReveal from './ScrollReveal.astro';
 import { socials } from '../data/socials';
 import config from '../data/config.json';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale ?? 'en');
 ---
 
 <section class="section contact" id="contact">
   <div class="container">
     <ScrollReveal>
-      <SectionHeading number="05" title={config.contact.heading} />
+      <SectionHeading number="05">
+        <Fragment slot="title">{t('sections.contact')}</Fragment>
+      </SectionHeading>
     </ScrollReveal>
 
     <ScrollReveal>
       <div class="contact__card">
-        <p class="contact__text">
-          {config.contact.text}
-        </p>
+        <p class="contact__text">{t('contact.text')}</p>
 
         <div class="contact__links">
           {socials.map((social) => (
@@ -36,7 +39,7 @@ import config from '../data/config.json';
         </div>
 
         <Button href={config.contact.ctaLinkedIn} class="contact__cta">
-          {config.contact.ctaText}
+          {t('contact.ctaText')}
         </Button>
       </div>
     </ScrollReveal>
@@ -82,7 +85,5 @@ import config from '../data/config.json';
     transition: color var(--transition-fast);
   }
 
-  .contact__link:hover {
-    color: var(--color-accent);
-  }
+  .contact__link:hover { color: var(--color-accent); }
 </style>

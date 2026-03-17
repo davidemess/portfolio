@@ -1,22 +1,23 @@
 ---
 import Button from './Button.astro';
 import config from '../data/config.json';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale ?? 'en');
 ---
 
 <section class="hero" id="main-content">
   <div class="hero__inner container">
     <div class="hero__layout">
       <div class="hero__content">
-        <p class="hero__greeting mono">{config.personal.greeting}</p>
+        <p class="hero__greeting mono">{t('personal.greeting')}</p>
         <h1 class="hero__name">
           {config.personal.name}<span class="hero__cursor">_</span>
         </h1>
-        <p class="hero__tagline">
-          {config.personal.tagline}
-        </p>
+        <p class="hero__tagline">{t('personal.tagline')}</p>
         <div class="hero__actions">
-          <Button href="#projects">View Projects</Button>
-          <Button href="#contact" variant="ghost">Contact Me</Button>
+          <Button href="#projects">{t('hero.viewProjects')}</Button>
+          <Button href="#contact" variant="ghost">{t('hero.contactMe')}</Button>
         </div>
       </div>
 
@@ -34,7 +35,7 @@ import config from '../data/config.json';
     </div>
 
     <div class="hero__scroll-indicator" aria-hidden="true">
-      <span class="mono">scroll</span>
+      <span class="mono">{t('hero.scroll')}</span>
       <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8 4L8 20M8 20L2 14M8 20L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -93,13 +94,8 @@ import config from '../data/config.json';
       gap: 3rem;
     }
 
-    .hero__content {
-      flex: 1;
-    }
-
-    .hero__avatar-wrapper {
-      order: 0;
-    }
+    .hero__content       { flex: 1; }
+    .hero__avatar-wrapper { order: 0; }
 
     .hero__avatar-frame {
       width: 280px;
@@ -128,10 +124,7 @@ import config from '../data/config.json';
   }
 
   @media (min-width: 1024px) {
-    .hero__avatar-frame {
-      width: 320px;
-      height: 320px;
-    }
+    .hero__avatar-frame { width: 320px; height: 320px; }
   }
 
   .hero__greeting {
@@ -189,8 +182,6 @@ import config from '../data/config.json';
   }
 
   @media (min-width: 1024px) {
-    .hero__scroll-indicator {
-      bottom: -6rem;
-    }
+    .hero__scroll-indicator { bottom: -6rem; }
   }
 </style>

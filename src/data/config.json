@@ -109,5 +109,34 @@
     "text": "Got an interesting project or just want to chat? My inbox is always open.",
     "ctaText": "Send a message on LinkedIn",
     "ctaLinkedIn": "https://www.linkedin.com/in/davide-messori/"
+  },
+  "nav": {
+    "about":     "About",
+    "skills":    "Skills",
+    "projects":  "Projects",
+    "career":    "Career",
+    "contact":   "Contact",
+    "openMenu":  "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "hero": {
+    "viewProjects": "View Projects",
+    "contactMe":    "Contact Me",
+    "scroll":       "scroll"
+  },
+  "sections": {
+    "skills":   "Skills",
+    "projects": "Projects",
+    "career":   "Career",
+    "contact":  "Contact"
+  },
+  "footer": {
+    "builtWith": "Built with Astro",
+    "top":       "top"
+  },
+  "skip": "Skip to content",
+  "palette": {
+    "copied": "copied",
+    "active": "active"
   }
 }

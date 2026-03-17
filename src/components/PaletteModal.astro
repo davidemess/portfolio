@@ -32,9 +32,11 @@
   </div>
 </dialog>
 
-<div class="pm-toast" id="pm-toast">hex copiato</div>
+<div class="pm-toast" id="pm-toast"></div>
 
 <script>
+import { en, it } from '../i18n/index.ts';
+
 const greens = [
   { name: 'void green', hex: '#0d1a0f', text: '#7fff6a' },
   { name: 'matrix',     hex: '#1a3d1f', text: '#7fff6a' },
@@ -78,6 +80,14 @@ function getActiveTheme(): string {
   try { return localStorage.getItem('portfolio-theme') ?? ''; } catch { return ''; }
 }
 
+function getLang(): string {
+  return document.documentElement.lang ?? 'en';
+}
+
+function trans() {
+  return getLang().startsWith('it') ? it : en;
+}
+
 function applyTheme(theme: string) {
   try { localStorage.setItem('portfolio-theme', theme); } catch {}
   if (theme) document.documentElement.setAttribute('data-theme', theme);
@@ -94,7 +104,7 @@ function applyTheme(theme: string) {
 function copyHex(hex: string) {
   navigator.clipboard.writeText(hex).catch(() => {});
   const toast = document.getElementById('pm-toast')!;
-  toast.textContent = `${hex} copiato`;
+  toast.textContent = `${hex} ${trans().palette.copied}`;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 1800);
 }
@@ -135,7 +145,7 @@ function renderCombos() {
       <div class="pm-chip-right">
         <span style="width:12px;height:12px;border-radius:50%;background:${combo.fg};display:inline-block"></span>
         <span style="width:12px;height:12px;border-radius:50%;background:${combo.acc};display:inline-block"></span>
-        ${isActive ? `<span class="pm-chip-active" style="border-color:${combo.acc};color:${combo.acc}">active</span>` : ''}
+        ${isActive ? `<span class="pm-chip-active" style="border-color:${combo.acc};color:${combo.acc}">${trans().palette.active}</span>` : ''}
       </div>`;
     chip.addEventListener('click', () => applyTheme(combo.theme));
     c.appendChild(chip);

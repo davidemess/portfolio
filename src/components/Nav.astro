@@ -1,14 +1,18 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import config from '../data/config.json';
+import { useTranslations } from '../i18n';
 
-const base = import.meta.env.BASE_URL;
+const lang = Astro.currentLocale ?? 'en';
+const t = useTranslations(lang);
+const isIT = lang === 'it';
 
 const links = [
-  { label: 'About',    href: '#about' },
-  { label: 'Skills',   href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Career',   href: '#career' },
-  { label: 'Contact',  href: '#contact' },
+  { key: 'nav.about',    href: '#about' },
+  { key: 'nav.skills',   href: '#skills' },
+  { key: 'nav.projects', href: '#projects' },
+  { key: 'nav.career',   href: '#career' },
+  { key: 'nav.contact',  href: '#contact' },
 ];
 ---
 
@@ -23,7 +27,7 @@ const links = [
     <ul class="nav__links" id="nav-links" role="list">
       {links.map((link) => (
         <li>
-          <a href={link.href} class="nav__link">{link.label}</a>
+          <a href={link.href} class="nav__link">{t(link.key)}</a>
         </li>
       ))}
       <li>
@@ -34,6 +38,11 @@ const links = [
     </ul>
 
     <div class="nav__controls">
+      <div class="nav__lang" role="group" aria-label="Language / Lingua">
+        <a href={getRelativeLocaleUrl('en', '/')} class="nav__lang-btn" aria-current={!isIT ? 'true' : undefined}>EN</a>
+        <a href={getRelativeLocaleUrl('it', '/')} class="nav__lang-btn" aria-current={isIT ? 'true' : undefined}>IT</a>
+      </div>
+
       <div class="nav__themes" role="group" aria-label="Color theme">
         <button class="nav__theme-btn" data-theme="" aria-label="Default theme" title="Default"></button>
         <button class="nav__theme-btn" data-theme="terminal" aria-label="Terminal Dark theme" title="Terminal Dark"></button>
@@ -45,7 +54,7 @@ const links = [
       <button
         class="nav__hamburger"
         id="nav-toggle"
-        aria-label="Apri menu"
+        aria-label={t('nav.openMenu')}
         aria-expanded="false"
         aria-controls="nav-links"
       >
@@ -90,13 +99,8 @@ const links = [
     gap: 2px;
   }
 
-  .nav__logo-bracket {
-    color: var(--color-accent);
-  }
-
-  .nav__logo-text {
-    color: var(--color-text-heading);
-  }
+  .nav__logo-bracket { color: var(--color-accent); }
+  .nav__logo-text    { color: var(--color-text-heading); }
 
   .nav__links {
     display: none;
@@ -126,13 +130,8 @@ const links = [
     transition: width var(--transition-base);
   }
 
-  .nav__link:hover {
-    color: var(--color-accent);
-  }
-
-  .nav__link:hover::after {
-    width: 100%;
-  }
+  .nav__link:hover         { color: var(--color-accent); }
+  .nav__link:hover::after  { width: 100%; }
 
   .nav__link--palette {
     font-family: var(--font-mono);
@@ -143,15 +142,8 @@ const links = [
     padding: 0;
     cursor: pointer;
   }
-  .nav__link--palette::before {
-    content: '//';
-    margin-right: 0.3em;
-    opacity: 0.6;
-  }
-  .nav__link--palette:hover {
-    opacity: 1;
-    color: var(--color-accent);
-  }
+  .nav__link--palette::before { content: '//'; margin-right: 0.3em; opacity: 0.6; }
+  .nav__link--palette:hover   { opacity: 1; color: var(--color-accent); }
 
   /* Hamburger */
   .nav__hamburger {
@@ -172,17 +164,9 @@ const links = [
     transition: transform var(--transition-base), opacity var(--transition-base);
   }
 
-  .nav__hamburger[aria-expanded='true'] .nav__hamburger-line:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-
-  .nav__hamburger[aria-expanded='true'] .nav__hamburger-line:nth-child(2) {
-    opacity: 0;
-  }
-
-  .nav__hamburger[aria-expanded='true'] .nav__hamburger-line:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
+  .nav__hamburger[aria-expanded='true'] .nav__hamburger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav__hamburger[aria-expanded='true'] .nav__hamburger-line:nth-child(2) { opacity: 0; }
+  .nav__hamburger[aria-expanded='true'] .nav__hamburger-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   /* Mobile menu open */
   .nav__links.open {
@@ -199,22 +183,35 @@ const links = [
     border-bottom: 1px solid var(--color-border);
   }
 
-  .nav__links.open .nav__link {
-    font-size: var(--text-base);
+  .nav__links.open .nav__link { font-size: var(--text-base); }
+
+  /* ── Controls ── */
+  .nav__controls { display: flex; align-items: center; gap: 1rem; }
+
+  /* Language switcher */
+  .nav__lang { display: flex; align-items: center; gap: 2px; }
+
+  .nav__lang-btn {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    background: none;
+    border: 1px solid transparent;
+    color: var(--color-text-secondary);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+    text-decoration: none;
   }
 
-  /* ── Controls: theme switcher + hamburger ── */
-  .nav__controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  .nav__lang-btn[aria-current='true'] {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
   }
 
-  .nav__themes {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  /* Theme switcher */
+  .nav__themes { display: flex; align-items: center; gap: 10px; }
 
   .nav__theme-btn {
     width: 16px;
@@ -228,86 +225,67 @@ const links = [
     transition: opacity var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
   }
 
-  /* default: solid accent green */
   .nav__theme-btn[data-theme=""]           { background-color: #00FF41; }
-  /* TERMINAL_DARK: fg:#7fff6a acc:#bf5fff */
   .nav__theme-btn[data-theme="terminal"]   { background: linear-gradient(135deg, #7fff6a 50%, #bf5fff 50%); }
-  /* DEEP_SPACE: fg:#e0b3ff acc:#7fff6a */
   .nav__theme-btn[data-theme="deep-space"] { background: linear-gradient(135deg, #e0b3ff 50%, #7fff6a 50%); }
-  /* MATRIX_GRN: fg:#b8ffb0 acc:#9c27b0 */
   .nav__theme-btn[data-theme="matrix"]     { background: linear-gradient(135deg, #b8ffb0 50%, #9c27b0 50%); }
-  /* GLITCH_MODE: fg:#bf5fff acc:#52c44a */
   .nav__theme-btn[data-theme="glitch"]     { background: linear-gradient(135deg, #bf5fff 50%, #52c44a 50%); }
 
-  .nav__theme-btn:hover {
-    opacity: 0.85;
-    transform: scale(1.15);
-  }
+  .nav__theme-btn:hover { opacity: 0.85; transform: scale(1.15); }
 
-  /* doppio ring: prima shadow "scava" il bg, la seconda disegna il bordo colorato */
   .nav__theme-btn.active {
     opacity: 1;
-    box-shadow:
-      0 0 0 2px var(--color-bg-primary),
-      0 0 0 4px var(--color-accent);
+    box-shadow: 0 0 0 2px var(--color-bg-primary), 0 0 0 4px var(--color-accent);
   }
 
   @media (min-width: 1024px) {
-    .nav__links {
-      display: flex;
-    }
-
-    .nav__hamburger {
-      display: none;
-    }
+    .nav__links    { display: flex; }
+    .nav__hamburger { display: none; }
   }
 </style>
 
 <script>
-  function initNav() {
-    const nav = document.getElementById('nav');
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.getElementById('nav-links');
+  import { en, it } from '../i18n/index.ts';
 
+  function getMenuLabels() {
+    const lang = document.documentElement.lang;
+    const trans = lang === 'it' ? it : en;
+    return { open: trans.nav.openMenu, close: trans.nav.closeMenu };
+  }
+
+  // ── Nav (scroll + hamburger) ──
+  function initNav() {
+    const nav    = document.getElementById('nav');
+    const toggle = document.getElementById('nav-toggle');
+    const links  = document.getElementById('nav-links');
     if (!nav || !toggle || !links) return;
 
-    // Scroll detection
-    const onScroll = () => {
-      nav.classList.toggle('scrolled', window.scrollY > 50);
-    };
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 50);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    // Hamburger toggle
     toggle.addEventListener('click', () => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      const labels = getMenuLabels();
       toggle.setAttribute('aria-expanded', String(!expanded));
-      toggle.setAttribute('aria-label', expanded ? 'Apri menu' : 'Chiudi menu');
+      toggle.setAttribute('aria-label', expanded ? labels.open : labels.close);
       links.classList.toggle('open');
     });
 
-    // Close menu on link click
-    links.querySelectorAll('a').forEach((a) => {
+    links.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
+        const labels = getMenuLabels();
         toggle.setAttribute('aria-expanded', 'false');
-        toggle.setAttribute('aria-label', 'Apri menu');
+        toggle.setAttribute('aria-label', labels.open);
         links.classList.remove('open');
       });
     });
   }
 
   // ── Theme switcher ──
-  function initTheme() {
-    const saved = localStorage.getItem('portfolio-theme') ?? '';
-    applyTheme(saved, false);
-  }
-
-  function applyTheme(theme, save = true) {
-    if (theme) {
-      document.documentElement.setAttribute('data-theme', theme);
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-    }
+  function applyTheme(theme: string, save = true) {
+    if (theme) document.documentElement.setAttribute('data-theme', theme);
+    else        document.documentElement.removeAttribute('data-theme');
     if (save) localStorage.setItem('portfolio-theme', theme);
 
     document.querySelectorAll('.nav__theme-btn').forEach(btn => {
@@ -317,13 +295,15 @@ const links = [
     });
   }
 
+  function initTheme() {
+    applyTheme(localStorage.getItem('portfolio-theme') ?? '', false);
+  }
+
   document.querySelectorAll('.nav__theme-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      applyTheme((btn as HTMLElement).dataset.theme ?? '');
-    });
+    btn.addEventListener('click', () => applyTheme((btn as HTMLElement).dataset.theme ?? ''));
   });
 
   initTheme();
   initNav();
-  document.addEventListener('astro:after-swap', () => { initNav(); initTheme(); });
+  document.addEventListener('astro:after-swap', () => { initTheme(); initNav(); });
 </script>

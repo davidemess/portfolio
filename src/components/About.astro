@@ -2,11 +2,15 @@
 import SectionHeading from './SectionHeading.astro';
 import ScrollReveal from './ScrollReveal.astro';
 import config from '../data/config.json';
+import { en, it } from '../i18n';
 
-const { bio, terminal } = config.about;
+const { terminal } = config.about;
 const terminalJson = JSON.stringify(terminal, null, 2);
 const { name, role } = config.personal;
 const jsonLines = terminalJson.split('\n');
+
+const lang = Astro.currentLocale ?? 'en';
+const bio = lang === 'it' ? it.about.bio : en.about.bio;
 ---
 
 <section class="section about" id="about">
@@ -195,7 +199,7 @@ const jsonLines = terminalJson.split('\n');
     const el = document.getElementById('tmux-clock');
     if (!el) return;
     const now = new Date();
-    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const days   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
@@ -230,11 +234,6 @@ const jsonLines = terminalJson.split('\n');
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
   }
 
-  /* ── 3-pane grid ──
-     whoami │ json
-     ───────│
-     bio    │ json
-  */
   .tmux__panes {
     display: grid;
     grid-template-columns: 55fr 45fr;
@@ -243,21 +242,10 @@ const jsonLines = terminalJson.split('\n');
       "bio    json";
   }
 
-  .tmux__pane--whoami {
-    grid-area: whoami;
-    border-right: 1px solid #2a2a2a;
-  }
+  .tmux__pane--whoami { grid-area: whoami; border-right: 1px solid #2a2a2a; }
+  .tmux__pane--bio    { grid-area: bio;    border-right: 1px solid #2a2a2a; }
+  .tmux__pane--json   { grid-area: json; }
 
-  .tmux__pane--bio {
-    grid-area: bio;
-    border-right: 1px solid #2a2a2a;
-  }
-
-  .tmux__pane--json {
-    grid-area: json;
-  }
-
-  /* ── Pane header: ─ label ─────────── ── */
   .tmux__pane-header {
     display: flex;
     align-items: center;
@@ -281,30 +269,15 @@ const jsonLines = terminalJson.split('\n');
     letter-spacing: 0.05em;
   }
 
-  /* ── Pane body ── */
   .tmux__pane-body {
     padding: 0.875rem 1rem;
     line-height: 1.7;
     color: var(--color-text-primary);
   }
 
-  /* Ghost + output stacked in the same grid cell */
-  .tmux__stack {
-    display: grid;
-    grid-template-areas: 'layer';
-  }
-
-  .tmux__ghost,
-  .tmux__stack > div {
-    grid-area: layer;
-  }
-
-  /* Ghost is invisible but holds the terminal height */
-  .tmux__ghost {
-    opacity: 0;
-    pointer-events: none;
-    user-select: none;
-  }
+  .tmux__stack { display: grid; grid-template-areas: 'layer'; }
+  .tmux__ghost, .tmux__stack > div { grid-area: layer; }
+  .tmux__ghost { opacity: 0; pointer-events: none; user-select: none; }
 
   .tmux__cursor-line {
     display: flex;
@@ -312,22 +285,11 @@ const jsonLines = terminalJson.split('\n');
     margin-top: 0.35rem;
   }
 
-  .tmux__cursor-line--hidden {
-    visibility: hidden;
-  }
+  .tmux__cursor-line--hidden { visibility: hidden; }
 
-  .tmux__prompt {
-    color: var(--color-accent);
-    font-weight: 700;
-    user-select: none;
-  }
+  .tmux__prompt { color: var(--color-accent); font-weight: 700; user-select: none; }
+  .tmux__cursor { color: var(--color-accent); animation: blink 1s step-end infinite; }
 
-  .tmux__cursor {
-    color: var(--color-accent);
-    animation: blink 1s step-end infinite;
-  }
-
-  /* ── Status bar ── */
   .tmux__statusbar {
     display: flex;
     align-items: center;
@@ -339,11 +301,7 @@ const jsonLines = terminalJson.split('\n');
     overflow: hidden;
   }
 
-  .tmux__statusbar-left {
-    display: flex;
-    align-items: stretch;
-    height: 100%;
-  }
+  .tmux__statusbar-left { display: flex; align-items: stretch; height: 100%; }
 
   .tmux__session {
     display: flex;
@@ -362,49 +320,20 @@ const jsonLines = terminalJson.split('\n');
     color: var(--color-text-secondary);
   }
 
-  .tmux__win--active {
-    color: var(--color-text-heading);
-    background-color: #1a1a1a;
-  }
+  .tmux__win--active { color: var(--color-text-heading); background-color: #1a1a1a; }
+  .tmux__statusbar-right { padding: 0 0.875rem; color: var(--color-text-secondary); }
 
-  .tmux__statusbar-right {
-    padding: 0 0.875rem;
-    color: var(--color-text-secondary);
-  }
-
-  /* ── Mobile: single column ── */
   @media (max-width: 767px) {
     .tmux__panes {
       grid-template-columns: 1fr;
-      grid-template-areas:
-        "whoami"
-        "bio"
-        "json";
+      grid-template-areas: "whoami" "bio" "json";
     }
-
-    .tmux__pane--whoami,
-    .tmux__pane--bio {
-      border-right: none;
-    }
+    .tmux__pane--whoami, .tmux__pane--bio { border-right: none; }
   }
 
-  /* ── JS-injected elements ── */
-  :global(.tmux__cmd-line) {
-    display: flex;
-    gap: 0.5rem;
-    align-items: baseline;
-  }
-
-  :global(.tmux__cmd-text) {
-    color: var(--color-text-heading);
-    font-weight: 600;
-  }
-
-  :global(.tmux__prefix) {
-    color: var(--color-accent);
-    opacity: 0.4;
-    user-select: none;
-  }
+  :global(.tmux__cmd-line)  { display: flex; gap: 0.5rem; align-items: baseline; }
+  :global(.tmux__cmd-text)  { color: var(--color-text-heading); font-weight: 600; }
+  :global(.tmux__prefix)    { color: var(--color-accent); opacity: 0.4; user-select: none; }
 
   :global(.tmux__out--name) {
     color: var(--color-text-heading);

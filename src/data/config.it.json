@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "description": "Software Technical Leader con esperienza in .NET, Angular e architetture moderne, specializzato in sistemi industriali WMS, WCS/MFS e SCADA."
+  },
+  "personal": {
+    "greeting": "// Ciao, mi chiamo",
+    "tagline": "Software Technical Leader — .NET & Angular | Sistemi Industriali"
+  },
+  "about": {
+    "bio": [
+      "Software Technical Leader con forte esperienza in .NET, Angular e architetture software moderne, specializzato in sistemi industriali WMS, WCS/MFS e SCADA.",
+      "Guida lo sviluppo di soluzioni intralogistiche di nuova generazione, contribuendo alla progettazione architetturale, alle decisioni tecniche, alla qualità del software e alla crescita del team.",
+      "Gestisce il refactoring di moduli legacy navigando le complessità della coesistenza con codice esistente, garantendo software industriale affidabile e manutenibile."
+    ]
+  },
+  "contact": {
+    "text":    "Hai un progetto interessante o vuoi semplicemente fare due chiacchiere? La mia inbox è sempre aperta.",
+    "ctaText": "Scrivimi su LinkedIn"
+  },
+  "projects": [
+    { "description": "Dashboard analytics in tempo reale con visualizzazioni interattive. Stack React, D3.js e WebSocket per lo streaming dati live." },
+    { "description": "API gateway ad alte prestazioni con rate limiting, caching e autenticazione JWT. Architettura a microservizi." },
+    { "description": "Headless content management system con editor WYSIWYG, versioning e API GraphQL." },
+    { "description": "Strumento CLI per scaffolding di progetti con template personalizzabili e configurazione interattiva." }
+  ],
+  "timeline": [
+    { "description": "Guida lo sviluppo di un WMS e applicazione web SCADA altamente configurabile con Angular, ASP.NET Core e SQL Server. Contribuisce all'architettura backend a microservizi con REST API, RabbitMQ e Docker. Coordina attività Agile, code review e mentorship del team." },
+    { "description": "Sviluppo ed evoluzione di applicazioni web industriali WMS e WCS/MFS. Focus su qualità del codice, test, fasi di validazione (FAT, SAT) e integrazione con sistemi SCADA." },
+    { "description": "Sviluppo e manutenzione di soluzioni software industriali per il settore ceramico, inclusi sistemi di raccolta dati, supervisione e gestione della produzione. Supporto tecnico on-site e collaborazione diretta con i clienti." },
+    { "description": "Diploma in Informatica e Telecomunicazioni. Progettazione di reti (TCP/IP, VLAN, VPN), scripting Linux/Bash, Python, C, programmazione web e progettazione di database." }
+  ],
+  "nav": {
+    "about":     "Chi sono",
+    "skills":    "Competenze",
+    "projects":  "Progetti",
+    "career":    "Carriera",
+    "contact":   "Contatti",
+    "openMenu":  "Apri menu",
+    "closeMenu": "Chiudi menu"
+  },
+  "hero": {
+    "viewProjects": "Vedi i Progetti",
+    "contactMe":    "Contattami",
+    "scroll":       "scorri"
+  },
+  "sections": {
+    "skills":   "Competenze",
+    "projects": "Progetti",
+    "career":   "Carriera",
+    "contact":  "Contatti"
+  },
+  "footer": {
+    "builtWith": "Sviluppato con Astro",
+    "top":       "su"
+  },
+  "skip": "Vai al contenuto",
+  "palette": {
+    "copied": "copiato",
+    "active": "attivo"
+  }
+}

@@ -3,17 +3,22 @@ import SectionHeading from './SectionHeading.astro';
 import ProjectCard from './ProjectCard.astro';
 import ScrollReveal from './ScrollReveal.astro';
 import { projects } from '../data/projects';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations(Astro.currentLocale ?? 'en');
 ---
 
 <section class="section projects" id="projects">
   <div class="container">
     <ScrollReveal>
-      <SectionHeading number="03" title="Projects" />
+      <SectionHeading number="03">
+        <Fragment slot="title">{t('sections.projects')}</Fragment>
+      </SectionHeading>
     </ScrollReveal>
 
     <div class="projects__grid reveal-stagger">
-      {projects.map((project) => (
-        <ProjectCard project={project} />
+      {projects.map((project, i) => (
+        <ProjectCard project={project} description={t(`projects.${i}.description`)} />
       ))}
     </div>
   </div>
