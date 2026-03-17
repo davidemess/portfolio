@@ -195,15 +195,15 @@ initPaletteModal();
 
 <style>
   dialog {
-    background: #080b08;
-    border: 1px solid #2a2e2a;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 0;
     width: min(820px, 95vw);
     max-height: 85vh;
     overflow-y: auto;
     margin: auto;
-    color: #e0ffe8;
+    color: var(--color-text-primary);
     font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
   }
 
@@ -227,7 +227,7 @@ initPaletteModal();
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.25em;
-    color: #7fff6a;
+    color: var(--color-accent);
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -238,13 +238,13 @@ initPaletteModal();
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(to right, #7fff6a44, transparent);
+    background: linear-gradient(to right, var(--color-accent-glow), transparent);
   }
 
   .pm-close {
     background: none;
-    border: 1px solid #2a2e2a;
-    color: #7fff6a88;
+    border: 1px solid var(--color-border);
+    color: color-mix(in srgb, var(--color-accent) 50%, transparent);
     width: 28px;
     height: 28px;
     border-radius: 4px;
@@ -257,12 +257,15 @@ initPaletteModal();
     margin-left: 1rem;
     transition: color 0.15s, border-color 0.15s;
   }
-  .pm-close:hover { color: #7fff6a; border-color: #7fff6a44; }
+  .pm-close:hover {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
 
   .pm-label {
     font-size: 10px;
     letter-spacing: 0.2em;
-    color: #7fff6a88;
+    color: var(--color-text-secondary);
     text-transform: uppercase;
     margin-bottom: 0.75rem;
     padding-left: 2px;
@@ -277,7 +280,7 @@ initPaletteModal();
 
   .pm-divider {
     height: 1px;
-    background: linear-gradient(to right, transparent, #7fff6a22, #bf5fff22, transparent);
+    background: linear-gradient(to right, transparent, var(--color-accent-glow), transparent);
     margin: 1.5rem 0;
   }
 
@@ -293,9 +296,9 @@ initPaletteModal();
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%) translateY(60px);
-    background: #0d1a0f;
-    border: 1px solid #7fff6a44;
-    color: #7fff6a;
+    background: var(--color-bg-primary);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+    color: var(--color-accent);
     font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
     font-size: 11px;
     letter-spacing: 0.1em;
